@@ -1,9 +1,11 @@
 package renderizacao;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Stroke;
 import java.util.List;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -57,6 +59,8 @@ public class Game extends JPanel{
 		dado.drawDado(g2d);
 		tabuleiro.paintTabuleiro(g2d);
 		
+		diceColor(g2d);
+		
 		//printa as pecas
 		for(int i=0;i<4;i++) {
 			g2d.setColor(Color.RED);
@@ -67,7 +71,7 @@ public class Game extends JPanel{
 		for(int i=0;i<4;i++) {
 			g2d.setColor(Color.GREEN);
 			ellipse2[i] = new Ellipse2D.Double(jogador2.getPecas().get(i).getX(), jogador2.getPecas().get(i).getY(), 40, 40);
-			g2d.fill(ellipse2[i]);	
+			g2d.fill(ellipse2[i]);
 		}
 		
 	}
@@ -118,6 +122,20 @@ public class Game extends JPanel{
 			}
 			repaint();
 		}
+	}
+	
+	private void diceColor(Graphics2D g2d) {
+		Stroke defaultStroke = g2d.getStroke();
+		if(player == 1) {
+			g2d.setColor(Color.RED);
+			g2d.setStroke(new BasicStroke(10));
+			g2d.drawRect(1000, 500, 100, 100);
+		}else if(player == 2) {
+			g2d.setColor(Color.GREEN);
+			g2d.setStroke(new BasicStroke(10));
+			g2d.drawRect(1000, 500, 100, 100);
+		}
+		g2d.setStroke(defaultStroke);
 	}
 	
 }

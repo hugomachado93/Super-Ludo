@@ -35,7 +35,7 @@ public class Tabuleiro{
 		
 	}
 	
-	public void DrawBigSquare(Graphics g2d) {
+	public void DrawBigSquare(Graphics2D g2d) {
 
 		g2d.setColor(Color.RED);
 		g2d.fillRect(0, 0, bigSquareSize, bigSquareSize);
@@ -51,7 +51,7 @@ public class Tabuleiro{
 		
 	}
 	
-	public void DrawMiddle(Graphics g2d) {
+	public void DrawMiddle(Graphics2D g2d) {
 		g2d.setColor(Color.BLUE);
 		g2d.fillPolygon(new int[] {bigSquareSize, nineSquares, middle}, new int[] {nineSquares, nineSquares, middle}, sizePoligonTri);
 		g2d.setColor(Color.RED);
@@ -62,7 +62,7 @@ public class Tabuleiro{
 		g2d.fillPolygon(new int[] {nineSquares, nineSquares, middle}, new int[] {bigSquareSize, nineSquares, middle}, sizePoligonTri);
 	}
 	
-	public void DrawPath(Graphics g2d) {
+	public void DrawPath(Graphics2D g2d) {
 		g2d.setColor(Color.BLACK);
 		g2d.fillRect(squareSize, squareSize*8, squareSize, squareSize);
 		g2d.setColor(Color.RED);

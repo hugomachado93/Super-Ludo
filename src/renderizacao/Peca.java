@@ -1,12 +1,14 @@
 package renderizacao;
 
+import java.awt.geom.Ellipse2D;
+
 public class Peca {
 
 	private int id;
 	private int x;
 	private int y;
 	private int numCasa;
-	
+	private Ellipse2D ellipse;
 	
 	public Peca(int id, int x, int y, int umCasa) {
 		this.id = id;
