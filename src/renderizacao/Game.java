@@ -89,13 +89,15 @@ public class Game extends JPanel{
 				if(player == 1)
 					for(int i=0;i<4;i++) {
 						if(ellipse1[i].contains(e.getX(), e.getY())) {
-							int val1, val2;
-							jogador1.getPecas().get(i).setX(jogador1.getCasas().get(val1 = dadoVal + jogador1.getPecas().get(i).getNumCasa()).getX());
-							jogador1.getPecas().get(i).setY(jogador1.getCasas().get(val2 = dadoVal + jogador1.getPecas().get(i).getNumCasa()).getY());
-							jogador1.getPecas().get(i).setNumCasa(val1);
-							jogador1.getPecas().get(i).setNumCasa(val2);
+							int val;
+							val = dadoVal + jogador1.getPecas().get(i).getNumCasa();
+							jogador1.getPecas().get(i).setX(jogador1.getCasas().get(val).getX());
+							jogador1.getPecas().get(i).setY(jogador1.getCasas().get(val).getY());
+							jogador1.getPecas().get(i).setNumCasa(val);
+							jogador1.getPecas().get(i).setNumCasa(val);
 							player++;
 							dadoClicado = false;
+							break;
 						}
 					}
 				else if(player == 2) {
@@ -109,6 +111,7 @@ public class Game extends JPanel{
 							//System.out.println("PECA SELECIONADA");
 							player=1;
 							dadoClicado = false;
+							break;
 						}
 					}
 				}
