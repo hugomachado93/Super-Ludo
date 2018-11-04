@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 	(0, 735)	(735, 735)
 */
 
-public class Tabuleiro extends JPanel{
+public class Tabuleiro{
 
 	private final int squareSize = 49;
 	private final int bigSquareSize = 294;
@@ -153,11 +153,7 @@ public class Tabuleiro extends JPanel{
 		
 	}
 	
-	@Override
-	public void paintComponent(Graphics g){
-		super.paintComponent(g);
-		Graphics2D g2d = (Graphics2D) g;
-		
+	public void paintTabuleiro(Graphics2D g2d){
 		
 		//Borda do tabuleiro
 		g2d.drawRect(0, 0, 735, 735);
