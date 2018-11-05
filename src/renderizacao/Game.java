@@ -34,6 +34,9 @@ public class Game extends JPanel{
 	
 	private Ellipse2D[] ellipse1 = new Ellipse2D[4];
 	private Ellipse2D[] ellipse2 = new Ellipse2D[4];
+	private Ellipse2D[] ellipse3 = new Ellipse2D[4];
+	private Ellipse2D[] ellipse4 = new Ellipse2D[4];
+	
 	private boolean dadoClicado = false;
 	private int dadoVal;
 	private int player = 1;
@@ -63,21 +66,35 @@ public class Game extends JPanel{
 		
 		//printa as pecas
 		for(int i=0;i<4;i++) {
-			g2d.setColor(Color.RED);
+			g2d.setColor(new Color(150, 0, 0));
 			ellipse1[i] = new Ellipse2D.Double(jogador1.getPecas().get(i).getX(), jogador1.getPecas().get(i).getY(), 40, 40);
-			g2d.fill(ellipse1[i]);	
+			g2d.fill(ellipse1[i]);
+
 		}
 		
 		for(int i=0;i<4;i++) {
-			g2d.setColor(Color.GREEN);
+			g2d.setColor(new Color(0, 150, 0));
 			ellipse2[i] = new Ellipse2D.Double(jogador2.getPecas().get(i).getX(), jogador2.getPecas().get(i).getY(), 40, 40);
 			g2d.fill(ellipse2[i]);
 		}
 		
+		for(int i=0;i<4;i++) {
+			g2d.setColor(new Color(0, 0, 150));
+			ellipse3[i] = new Ellipse2D.Double(jogador3.getPecas().get(i).getX(), jogador3.getPecas().get(i).getY(), 40, 40);
+			g2d.fill(ellipse3[i]);
+		}
+		
+		for(int i=0;i<4;i++) {
+			
+		}
+		
+		g2d.setColor(Color.DARK_GRAY);
+		g2d.fillOval(495, 495, 40, 40);
 	}
 	
 	public void eventDado(JButton b) {
 		b.addMouseListener(new MouseAdapter() {
+			@Override
 			 public void mouseClicked(MouseEvent e) {
 				 dado.getRandNumDado();
 				 repaint();
@@ -87,6 +104,7 @@ public class Game extends JPanel{
 	}
 	
 	class MyMouseListener extends MouseAdapter{
+		@Override
 		public void mouseClicked(MouseEvent e) {
 			dadoVal = dado.getNumDado();
 			if(dadoClicado) {

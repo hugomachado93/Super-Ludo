@@ -12,12 +12,8 @@ public class DrawTrabuleiro{
 		
 		final int width = 1366;
 		final int height = 768;
-		//Caminho cam = new Caminho();
-		Dado dado = new Dado();
 		JFrame myFrame = new JFrame("LUDO");
 		Game game = new Game();
-		int player = 0;
-		int valDado;
 		
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		myFrame.setSize(width, height);
