@@ -32,6 +32,10 @@ public class Jogador{
 			pecas.add(new Peca(3, 200, 642, 0));
 		}else if(num == 4) {
 			casas = new Caminho(4).getCaminho();
+			pecas.add(new Peca(4, 495, 495, 0));
+			pecas.add(new Peca(4, 495, 642, 0));
+			pecas.add(new Peca(4, 642, 495, 0));
+			pecas.add(new Peca(4, 642, 642, 0));
 		}
 	}
 	

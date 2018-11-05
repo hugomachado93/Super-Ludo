@@ -85,11 +85,10 @@ public class Game extends JPanel{
 		}
 		
 		for(int i=0;i<4;i++) {
-			
+			g2d.setColor(new Color(150, 150, 0));
+			ellipse4[i] = new Ellipse2D.Double(jogador4.getPecas().get(i).getX(), jogador4.getPecas().get(i).getY(), 40, 40);
+			g2d.fill(ellipse4[i]);
 		}
-		
-		g2d.setColor(Color.DARK_GRAY);
-		g2d.fillOval(495, 495, 40, 40);
 	}
 	
 	public void eventDado(JButton b) {
