@@ -20,8 +20,9 @@ public class Tabuleiro{
 	private final int sizePoligonTri = 3;
 	private final int sizeBall = 49;
 	
+	private static Tabuleiro tabuleiro = null;
 	
-	public Tabuleiro() {
+	private Tabuleiro() {
 		
 	}
 	
@@ -174,6 +175,13 @@ public class Tabuleiro{
 		DrawStartPlaces(g2d);
 		
 		
+	}
+	
+	public static Tabuleiro getTabuleiro() {
+		if(tabuleiro == null) {
+			tabuleiro = new Tabuleiro();
+		}
+		return tabuleiro;
 	}
 	
 }

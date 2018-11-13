@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
-public class DrawTrabuleiro{
+public class ExecGame{
 
 	public static void main(String[] args) throws IOException {
 		

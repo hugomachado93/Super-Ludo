@@ -1,6 +1,9 @@
 package renderizacao;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -16,6 +19,8 @@ import javax.swing.JButton;
 public class Dado{
 	
 	private static int numDado=1;
+	
+	static boolean dadoClicado = false;
 	
 	private List<BufferedImage> images = new ArrayList<>();
 	
@@ -40,11 +45,11 @@ public class Dado{
 	}
 	
 	public int getRandNumDado() {
-		return numDado = r.nextInt(6);
+		return numDado = r.nextInt(6) + 1;
 	}
 	
 	public void drawDado(Graphics2D g2d) {
-		g2d.drawImage(images.get(numDado), 1000, 500, null);
+		g2d.drawImage(images.get(numDado - 1), 1000, 500, null);
 	}
 	
 }
