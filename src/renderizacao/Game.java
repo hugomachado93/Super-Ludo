@@ -34,9 +34,6 @@ public class Game extends JPanel{
 	
 	private Ellipse2D[] ellipse1 = new Ellipse2D[4];
 	private Ellipse2D[] ellipse2 = new Ellipse2D[4];
-	private Ellipse2D[] ellipse3 = new Ellipse2D[4];
-	private Ellipse2D[] ellipse4 = new Ellipse2D[4];
-	
 	private boolean dadoClicado = false;
 	private int dadoVal;
 	private int player = 1;
@@ -66,35 +63,22 @@ public class Game extends JPanel{
 		
 		//printa as pecas
 		for(int i=0;i<4;i++) {
-			g2d.setColor(new Color(150, 0, 0));
+			g2d.setColor(Color.RED);
 			ellipse1[i] = new Ellipse2D.Double(jogador1.getPecas().get(i).getX(), jogador1.getPecas().get(i).getY(), 40, 40);
-			g2d.fill(ellipse1[i]);
-
+			g2d.fill(ellipse1[i]);	
 		}
 		
 		for(int i=0;i<4;i++) {
-			g2d.setColor(new Color(0, 150, 0));
+			g2d.setColor(Color.GREEN);
 			ellipse2[i] = new Ellipse2D.Double(jogador2.getPecas().get(i).getX(), jogador2.getPecas().get(i).getY(), 40, 40);
 			g2d.fill(ellipse2[i]);
 		}
 		
-		for(int i=0;i<4;i++) {
-			g2d.setColor(new Color(0, 0, 150));
-			ellipse3[i] = new Ellipse2D.Double(jogador3.getPecas().get(i).getX(), jogador3.getPecas().get(i).getY(), 40, 40);
-			g2d.fill(ellipse3[i]);
-		}
-		
-		for(int i=0;i<4;i++) {
-			g2d.setColor(new Color(150, 150, 0));
-			ellipse4[i] = new Ellipse2D.Double(jogador4.getPecas().get(i).getX(), jogador4.getPecas().get(i).getY(), 40, 40);
-			g2d.fill(ellipse4[i]);
-		}
 	}
 	
 	public void eventDado(JButton b) {
 		b.addMouseListener(new MouseAdapter() {
-			@Override
-			 public void mouseClicked(MouseEvent e) {
+			 public void mouseClicked(MouseEvent e) { // clique no botão de rolamento de dado
 				 dado.getRandNumDado();
 				 repaint();
 				 dadoClicado = true;
@@ -102,20 +86,21 @@ public class Game extends JPanel{
 		});
 	}
 	
-	class MyMouseListener extends MouseAdapter{
-		@Override
+	class MyMouseListener extends MouseAdapter{ // clique na peça
 		public void mouseClicked(MouseEvent e) {
 			dadoVal = dado.getNumDado();
 			if(dadoClicado) {
 				if(player == 1)
 					for(int i=0;i<4;i++) {
 						if(ellipse1[i].contains(e.getX(), e.getY())) {
-							int val;
-							val = dadoVal + jogador1.getPecas().get(i).getNumCasa();
-							jogador1.getPecas().get(i).setX(jogador1.getCasas().get(val).getX());
-							jogador1.getPecas().get(i).setY(jogador1.getCasas().get(val).getY());
-							jogador1.getPecas().get(i).setNumCasa(val);
-							jogador1.getPecas().get(i).setNumCasa(val);
+							int val1,x1,y1;
+							val1 = dadoVal + jogador1.getPecas().get(i).getNumCasa();
+							x1 = jogador1.getCasas().get(val1).getX();
+							y1 = jogador1.getCasas().get(val1).getY();
+							
+							jogador1.getPecas().get(i).setX(x1);
+							jogador1.getPecas().get(i).setY(y1);
+							jogador1.getPecas().get(i).setNumCasa(val1);
 							player++;
 							dadoClicado = false;
 							break;
@@ -124,10 +109,12 @@ public class Game extends JPanel{
 				else if(player == 2) {
 					for(int i=0;i<4;i++) {
 						if(ellipse2[i].contains(e.getX(), e.getY())) {
-							int val1, val2;
-							jogador2.getPecas().get(i).setX(jogador2.getCasas().get(val1 = dadoVal + jogador2.getPecas().get(i).getNumCasa()).getX());
-							jogador2.getPecas().get(i).setY(jogador2.getCasas().get(val2 = dadoVal + jogador2.getPecas().get(i).getNumCasa()).getY());
-							jogador2.getPecas().get(i).setNumCasa(val1);
+							int val2 = dadoVal + jogador2.getPecas().get(i).getNumCasa();
+							int x2 = jogador2.getCasas().get(val2).getX();
+							int y2 = jogador2.getCasas().get(val2).getY();
+							
+							jogador2.getPecas().get(i).setX(x2);
+							jogador2.getPecas().get(i).setY(y2);
 							jogador2.getPecas().get(i).setNumCasa(val2);
 							//System.out.println("PECA SELECIONADA");
 							player=1;

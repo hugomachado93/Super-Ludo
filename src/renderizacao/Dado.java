@@ -40,11 +40,11 @@ public class Dado{
 	}
 	
 	public int getRandNumDado() {
-		return numDado = r.nextInt(6);
+		return numDado = r.nextInt(6) + 1;
 	}
 	
 	public void drawDado(Graphics2D g2d) {
-		g2d.drawImage(images.get(numDado), 1000, 500, null);
+		g2d.drawImage(images.get(numDado-1), 1000, 500, null);
 	}
 	
 }
