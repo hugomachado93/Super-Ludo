@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 
 public class GameFacade extends Observable{
 
-	private static int nJogador = 1;
+	private static int nJogador = 0;
 	private Jogador[] jogador = new Jogador[4];
 	private JButton bDice;
 	private Ellipse2D[] desenhoPeca1 = new Ellipse2D[4];
@@ -38,7 +38,7 @@ public class GameFacade extends Observable{
 		bDice = new JButton("Dado");
 		dado = new Dado();
 		desenhos = new Desenhos();
-		eventos = new Eventos();
+		//eventos = new Eventos();
 	}
 
 	public void DesenhaTodasAsPecas(Graphics2D g2d) {
@@ -94,48 +94,44 @@ public class GameFacade extends Observable{
 	}
 	
 	public void mouseClicked(MouseEvent e) {
+		Ellipse2D[] desenhoTemp;
 		dadoVal = dado.getNumDado();
+		
+		if(nJogador == 0) {
+			desenhoTemp = desenhoPeca1;
+		}else if(nJogador == 1) {
+			desenhoTemp = desenhoPeca2;
+		}else if(nJogador == 2) {
+			desenhoTemp = desenhoPeca3;
+		}else {
+			desenhoTemp = desenhoPeca4;
+		}
+		
 		if(Dado.dadoClicado) {
-			if(nJogador == 1)
-				for(int i=0;i<4;i++) {
-					if(desenhoPeca1[i].contains(e.getPoint())) {
-						int val;
-						val = dadoVal + jogador[0].getPecas().get(i).getNumCasa();
+			for(int i=0;i<4;i++) {
+				if(desenhoTemp[i].contains(e.getPoint()) && !jogador[nJogador].getPecas().get(i).isUltimaCasa()) {
+					int val;
+					val = dadoVal + jogador[nJogador].getPecas().get(i).getNumCasa();
 						
-						if(val > MAX_CASAS) {
-							val = MAX_CASAS - (val - MAX_CASAS);
-						}
-						
-						jogador[0].getPecas().get(i).setNumCasa(val);
-						jogador[0].getPecas().get(i).setX(jogador[0].getCasas().get(val).getX());
-						jogador[0].getPecas().get(i).setY(jogador[0].getCasas().get(val).getY());
-						nJogador++;
-						Dado.dadoClicado = false;
-						break;
+					if(val > MAX_CASAS) {
+						val = MAX_CASAS - (val - MAX_CASAS);
+					}else if(val == MAX_CASAS) {
+						jogador[nJogador].getPecas().get(i).setUltimaCasa(true);
 					}
-				}
-			else if(nJogador == 2) {
-				for(int i=0;i<4;i++) {
-					if(desenhoPeca2[i].contains(e.getPoint())) {
-						int val;
-						val = dadoVal + jogador[1].getPecas().get(i).getNumCasa();
 						
-						if(val > MAX_CASAS) {
-							val = MAX_CASAS - (val - MAX_CASAS);
-						}
-						
-						jogador[1].getPecas().get(i).setNumCasa(val);
-						jogador[1].getPecas().get(i).setX(jogador[1].getCasas().get(val).getX());
-						jogador[1].getPecas().get(i).setY(jogador[1].getCasas().get(val).getY());
-						nJogador=1;
-						Dado.dadoClicado = false;
-						break;
-					}
+					jogador[nJogador].getPecas().get(i).setNumCasa(val);
+					jogador[nJogador].getPecas().get(i).setX(jogador[nJogador].getCasas().get(val).getX());
+					jogador[nJogador].getPecas().get(i).setY(jogador[nJogador].getCasas().get(val).getY());
+					
+					nJogador++;
+					Dado.dadoClicado = false;
+					break;
 				}
 			}
+			setChanged();
+			notifyObservers();
 		}
-		setChanged();
-		notifyObservers();
+		nJogador = (nJogador == 2) ? 0: nJogador;
 	}
 	
 	public Eventos getEventos() {
