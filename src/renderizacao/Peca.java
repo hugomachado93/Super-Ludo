@@ -1,5 +1,9 @@
 package renderizacao;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Stroke;
 import java.awt.geom.Ellipse2D;
 
 public class Peca {
@@ -9,8 +13,10 @@ public class Peca {
 	private int y;
 	private int numCasa;
 	private Ellipse2D ellipse;
-	
-	public Peca(int id, int x, int y, int umCasa) {
+	private boolean barreira = false;
+	private boolean ultimaCasa = false;
+
+	public Peca(int id, int x, int y, int numCasa) {
 		this.id = id;
 		this.x = x;
 		this.y = y;
@@ -60,6 +66,30 @@ public class Peca {
 	
 	public void setNumCasa(int numCasa) {
 		this.numCasa = numCasa;
+	}
+	
+	public boolean isBarreira() {
+		return barreira;
+	}
+
+	public void setBarreira(boolean barreira) {
+		this.barreira = barreira;
+	}
+	
+	public Ellipse2D getEllipse() {
+		return ellipse;
+	}
+
+	public void setEllipse(Ellipse2D ellipse) {
+		this.ellipse = ellipse;
+	}
+
+	public boolean isUltimaCasa() {
+		return ultimaCasa;
+	}
+
+	public void setUltimaCasa(boolean ultimaCasa) {
+		this.ultimaCasa = ultimaCasa;
 	}
 	
 }

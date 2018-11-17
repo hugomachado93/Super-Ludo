@@ -7,7 +7,7 @@ public class Caminho {
 	
 	//private Caminho path[] = new Caminho[56];
 	
-	private List<Casa> casas = new ArrayList<Casa>();
+	private List<Casa> casas = new ArrayList<>();
 	
 	public Caminho(int num) {
 		if(num == 1) {
@@ -62,8 +62,14 @@ public class Caminho {
 			casas.add(new Casa(55, 395, 0, true));
 			casas.add(new Casa(5, 395, 0, false));
 			casas.add(new Casa(5, 345, 0, false));
-			casas.add(new Casa(5, 295, 0, false));
+			//casas.add(new Casa(5, 295, 0, false));
 			//TODO FALTA IMPLEMENTAR A PARTE FINAL
+			casas.add(new Casa(55,345,0, false));
+			casas.add(new Casa(102, 345, 0, false));
+			casas.add(new Casa(150, 345, 0, false));
+			casas.add(new Casa(200, 345, 0, false));
+			casas.add(new Casa(250, 345, 0, false));
+			casas.add(new Casa(300, 345, 0, true));
 			
 		}else if(num == 2) {
 			casas.add(new Casa(400, 50, 0, false));

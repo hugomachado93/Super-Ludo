@@ -1,15 +1,12 @@
 package renderizacao;
 
-import java.util.List;
-import java.util.ArrayList;
-
 public class Casa {
 
 	private int x;
 	private int y;
 	private int numPecas;
 	private boolean casaEspecial;
-	
+
 	public Casa(int x, int y, int numPecas, boolean casaEspecial) {
 		
 		this.x = x;
@@ -50,7 +47,5 @@ public class Casa {
 	public void setCasaEspecial(boolean casaEspecial) {
 		this.casaEspecial = casaEspecial;
 	}
-	
-	
 	
 }
