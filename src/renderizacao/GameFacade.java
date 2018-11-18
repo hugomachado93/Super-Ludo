@@ -119,11 +119,10 @@ public class GameFacade extends Observable{
 						jogador[nJogador].getPecas().get(i).setUltimaCasa(true);
 					}
 					
-					procuraPeca(val,nJogador);
-					
 					jogador[nJogador].getPecas().get(i).setNumCasa(val);
-					jogador[nJogador].getPecas().get(i).setX(jogador[nJogador].getCasas().get(val).getX());
-					jogador[nJogador].getPecas().get(i).setY(jogador[nJogador].getCasas().get(val).getY());
+					jogador[nJogador].getPecas().get(i).setX( jogador[nJogador].getCasas().get(val).getX() );
+					jogador[nJogador].getPecas().get(i).setY( jogador[nJogador].getCasas().get(val).getY() );
+					procuraPeca(i,val,nJogador);
 					
 					nJogador++;
 					Dado.dadoClicado = false;
@@ -151,20 +150,24 @@ public class GameFacade extends Observable{
 	public void DrawDado(Graphics2D g2d) {
 		dado.drawDado(g2d);
 	}
-	private void procuraPeca(int val, int nJogador)
+	private void procuraPeca(int id,int val, int numJogador)
 	{
+		int x,y,px,py;
 		for(int i=0;i<4;i++)
 		{
-			int x,y;
 			for(int j=0; j<4;j++)
 			{
-				if( jogador[i].getPecas().get(j).getNumCasa()==val && jogador[nJogador]!=jogador[i] )
+				px = jogador[numJogador].getPecas().get(id).getX();
+				py = jogador[numJogador].getPecas().get(id).getY();
+				if( jogador[i].getPecas().get(j).getX()==px && jogador[i].getPecas().get(j).getY()==py && jogador[numJogador]!=jogador[i] )
 				{
+					
 					x=jogador[i].getInicialX(j);
 					y=jogador[i].getInicialY(j);
 					jogador[i].getPecas().get(j).setX(x);
 					jogador[i].getPecas().get(j).setY(y);
 					jogador[i].getPecas().get(j).setNumCasa(0);
+					break;
 
 				}
 			}
