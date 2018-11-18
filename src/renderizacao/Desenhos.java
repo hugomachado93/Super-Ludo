@@ -20,6 +20,14 @@ public class Desenhos {
 			g2d.setColor(Color.GREEN);
 			g2d.setStroke(new BasicStroke(10));
 			g2d.drawRect(1000, 500, 100, 100);
+		}else if(nJogador == 2) {
+			g2d.setColor(Color.BLUE);
+			g2d.setStroke(new BasicStroke(10));
+			g2d.drawRect(1000, 500, 100, 100);
+		}else {
+			g2d.setColor(Color.YELLOW);
+			g2d.setStroke(new BasicStroke(10));
+			g2d.drawRect(1000, 500, 100, 100);
 		}
 		g2d.setStroke(defaultStroke);
 	}
@@ -43,12 +51,12 @@ public class Desenhos {
 			for(int j=0;j<4;j++) {
 				jogador[1].getPecas().get(j).setBarreira(false);
 				if(((casaTemp = jogador[1].getPecas().get(i).getNumCasa()) == jogador[1].getPecas().get(j).getNumCasa()) && (i != j) && casaTemp !=0) {
-					jogador[0].getPecas().get(i).setBarreira(true);
+					jogador[1].getPecas().get(i).setBarreira(true);
 					g2d.drawOval(jogador[1].getPecas().get(j).getX()-2, jogador[1].getPecas().get(j).getY()-2, 45, 45);
 				}
 			}
 		}
-		g2d.setColor(Color.YELLOW);
+		g2d.setColor(Color.BLUE);
 		g2d.setStroke(new BasicStroke(2));
 		for(int i=0;i<4;i++) {
 			for(int j=0;j<4;j++) {
@@ -59,7 +67,7 @@ public class Desenhos {
 				}
 			}
 		}
-		g2d.setColor(Color.BLUE);
+		g2d.setColor(Color.YELLOW);
 		g2d.setStroke(new BasicStroke(2));
 		for(int i=0;i<4;i++) {
 			for(int j=0;j<4;j++) {

@@ -10,22 +10,19 @@ import java.awt.geom.Ellipse2D;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 public class GameFacade extends Observable{
 
-	private static int nJogador = 0;
+	private static int nJogador = new Random().nextInt(2);
 	private Jogador[] jogador = new Jogador[4];
 	private JButton bDice;
-	private Ellipse2D[] desenhoPeca1 = new Ellipse2D[4];
-	private Ellipse2D[] desenhoPeca2 = new Ellipse2D[4];
-	private Ellipse2D[] desenhoPeca3 = new Ellipse2D[4];
-	private Ellipse2D[] desenhoPeca4 = new Ellipse2D[4];
+	private JButton[] bDebug = new JButton[6];
 	private Dado dado;
 	private Desenhos desenhos;
-	private Eventos eventos;
 	private int dadoVal;
 	private final int MAX_CASAS = 56;
 	
@@ -38,34 +35,34 @@ public class GameFacade extends Observable{
 		bDice = new JButton("Dado");
 		dado = new Dado();
 		desenhos = new Desenhos();
-		//eventos = new Eventos();
+
 	}
 
 	public void DesenhaTodasAsPecas(Graphics2D g2d) {
 		//printa as pecas
 			for(int i=0;i<4;i++) {
 				g2d.setColor(new Color(150, 0, 0));
-				desenhoPeca1[i] = new Ellipse2D.Double(jogador[0].getPecas().get(i).getX(), jogador[0].getPecas().get(i).getY(), 40, 40);
-				g2d.fill(desenhoPeca1[i]);
+				jogador[0].getPecas().get(i).setEllipse(new Ellipse2D.Double(jogador[0].getPecas().get(i).getX(), jogador[0].getPecas().get(i).getY(), 40, 40));
+				g2d.fill(jogador[0].getPecas().get(i).getEllipse());
 
 			}
 				
 			for(int i=0;i<4;i++) {
 				g2d.setColor(new Color(0, 150, 0));
-				desenhoPeca2[i] = new Ellipse2D.Double(jogador[1].getPecas().get(i).getX(), jogador[1].getPecas().get(i).getY(), 40, 40);
-				g2d.fill(desenhoPeca2[i]);
+				jogador[1].getPecas().get(i).setEllipse(new Ellipse2D.Double(jogador[1].getPecas().get(i).getX(), jogador[1].getPecas().get(i).getY(), 40, 40));
+				g2d.fill(jogador[1].getPecas().get(i).getEllipse());
 			}
 				
 			for(int i=0;i<4;i++) {
 				g2d.setColor(new Color(0, 0, 150));
-				desenhoPeca3[i] = new Ellipse2D.Double(jogador[2].getPecas().get(i).getX(), jogador[2].getPecas().get(i).getY(), 40, 40);
-				g2d.fill(desenhoPeca3[i]);
+				jogador[2].getPecas().get(i).setEllipse(new Ellipse2D.Double(jogador[2].getPecas().get(i).getX(), jogador[2].getPecas().get(i).getY(), 40, 40));
+				g2d.fill(jogador[2].getPecas().get(i).getEllipse());
 			}
 				
 			for(int i=0;i<4;i++) {
 				g2d.setColor(new Color(150, 150, 0));
-				desenhoPeca4[i] = new Ellipse2D.Double(jogador[3].getPecas().get(i).getX(), jogador[3].getPecas().get(i).getY(), 40, 40);
-				g2d.fill(desenhoPeca4[i]);
+				jogador[3].getPecas().get(i).setEllipse(new Ellipse2D.Double(jogador[3].getPecas().get(i).getX(), jogador[3].getPecas().get(i).getY(), 40, 40));
+				g2d.fill(jogador[3].getPecas().get(i).getEllipse());
 			}
 	}
 	
@@ -94,48 +91,77 @@ public class GameFacade extends Observable{
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-		Ellipse2D[] desenhoTemp;
 		dadoVal = dado.getNumDado();
-		
-		if(nJogador == 0) {
-			desenhoTemp = desenhoPeca1;
-		}else if(nJogador == 1) {
-			desenhoTemp = desenhoPeca2;
-		}else if(nJogador == 2) {
-			desenhoTemp = desenhoPeca3;
-		}else {
-			desenhoTemp = desenhoPeca4;
-		}
 		
 		if(Dado.dadoClicado) {
 			for(int i=0;i<4;i++) {
-				if(desenhoTemp[i].contains(e.getPoint()) && !jogador[nJogador].getPecas().get(i).isUltimaCasa()) {
-					int val;
-					val = dadoVal + jogador[nJogador].getPecas().get(i).getNumCasa();
+				if(jogador[nJogador].getPecas().get(i).getEllipse().contains(e.getPoint()) && !jogador[nJogador].getPecas().get(i).isUltimaCasa()) {
+					if(!jogador[nJogador].getPecas().get(i).isPodeSair() && dadoVal != 5) {
+						if(!jogador[nJogador].isPecaIniciada()) {
+							jogador[nJogador].setPecaIniciada(true);
+							jogador[nJogador].getPecas().get(0).setPodeSair(true);
+							jogador[nJogador].getPecas().get(0).setX(jogador[nJogador].getCasas().get(0).getX());
+							jogador[nJogador].getPecas().get(0).setY(jogador[nJogador].getCasas().get(0).getY());
+							setChanged();
+							notifyObservers();
+							break;
+						}
+						System.out.println("AQUI2");
+						break;
+					}else if(!jogador[nJogador].getPecas().get(i).isPodeSair() && dadoVal == 5){
+						jogador[nJogador].setPecaIniciada(true);
+						jogador[nJogador].getPecas().get(i).setPodeSair(true);
+						jogador[nJogador].getPecas().get(i).setX(jogador[nJogador].getCasas().get(0).getX());
+						jogador[nJogador].getPecas().get(i).setY(jogador[nJogador].getCasas().get(0).getY());
+						System.out.println("AQUI3");
+						nJogador++;
+						Dado.dadoClicado = false;
+						break;
+					}else {
+						int val = dadoVal + jogador[nJogador].getPecas().get(i).getNumCasa();
 						
-					if(val > MAX_CASAS) {
-						val = MAX_CASAS - (val - MAX_CASAS);
-					}else if(val == MAX_CASAS) {
-						jogador[nJogador].getPecas().get(i).setUltimaCasa(true);
+						if(val > MAX_CASAS) {
+							val = MAX_CASAS - (val - MAX_CASAS);
+						}else if(val == MAX_CASAS) {
+							jogador[nJogador].getPecas().get(i).setUltimaCasa(true);
+							break;
+						}
+						
+						jogador[nJogador].getPecas().get(i).setNumCasa(val);
+						jogador[nJogador].getPecas().get(i).setX(jogador[nJogador].getCasas().get(val).getX());
+						jogador[nJogador].getPecas().get(i).setY(jogador[nJogador].getCasas().get(val).getY());
+						
+						if(dadoVal == 6 && (jogador[nJogador].getNumJogadas() != 2)) {
+							jogador[nJogador].sumNumJogadas();
+							Dado.dadoClicado = false;
+							break;
+						}else if (dadoVal == 6 && (jogador[nJogador].getNumJogadas() == 2)){
+							int ultimoPeao = Integer.MAX_VALUE;
+							int peao = i;
+							for(int j=0;j<4;j++) {
+								if(ultimoPeao > jogador[nJogador].getPecas().get(j).getNumCasa())
+								ultimoPeao = jogador[nJogador].getPecas().get(j).getNumCasa();
+								peao = j;
+							}
+							jogador[nJogador].getPecas().get(peao).setX(jogador[nJogador].getCasas().get(0).getX());
+							jogador[nJogador].getPecas().get(peao).setY(jogador[nJogador].getCasas().get(0).getY());
+							jogador[nJogador].setNumJogadas(0);
+							break;
+						}
+						
+						procuraPeca(i, val, nJogador);
+						
+						jogador[nJogador].setNumJogadas(0);
+						nJogador++;
+						Dado.dadoClicado = false;
+						break;
 					}
-						
-					jogador[nJogador].getPecas().get(i).setNumCasa(val);
-					jogador[nJogador].getPecas().get(i).setX(jogador[nJogador].getCasas().get(val).getX());
-					jogador[nJogador].getPecas().get(i).setY(jogador[nJogador].getCasas().get(val).getY());
-					
-					nJogador++;
-					Dado.dadoClicado = false;
-					break;
 				}
 			}
-			setChanged();
-			notifyObservers();
 		}
+		setChanged();
+		notifyObservers();
 		nJogador = (nJogador == 2) ? 0: nJogador;
-	}
-	
-	public Eventos getEventos() {
-		return eventos;
 	}
 	
 	public void DiceColor(Graphics2D g2d, Stroke defaultStroke) {
@@ -148,6 +174,33 @@ public class GameFacade extends Observable{
 	
 	public void DrawDado(Graphics2D g2d) {
 		dado.drawDado(g2d);
+	}
+	
+	
+	private void procuraPeca(int id,int val, int numJogador)
+	{
+		int x,y,px,py;
+		for(int i=0;i<4;i++)
+		{
+			for(int j=0; j<4;j++)
+			{
+				px = jogador[numJogador].getPecas().get(id).getX();
+				py = jogador[numJogador].getPecas().get(id).getY();
+				if( jogador[i].getPecas().get(j).getX()==px && jogador[i].getPecas().get(j).getY()==py && jogador[numJogador]!=jogador[i] 
+						&& !jogador[numJogador].getPecas().get(i).isBarreira())
+				{
+					
+					x=jogador[i].getInicialX(j);
+					y=jogador[i].getInicialY(j);
+					jogador[i].getPecas().get(j).setX(x);
+					jogador[i].getPecas().get(j).setY(y);
+					jogador[i].getPecas().get(j).setNumCasa(0);
+					break;
+
+				}
+			}
+		}
+		
 	}
 	
 }

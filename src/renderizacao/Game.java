@@ -33,6 +33,7 @@ public class Game extends JPanel{
 	private void GUI() {
 		setLayout(null);
 		add(gameFacade.eventDado());
+		//add(gameFacade.DadoDebug());
 		
 		gameFacade.addObserver((obj, arg)-> {
 			System.out.println("Repainting");

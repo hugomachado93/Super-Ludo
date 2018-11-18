@@ -12,10 +12,12 @@ public class Peca {
 	private int x;
 	private int y;
 	private int numCasa;
+	private int ultimoMovimentado = 0;
 	private Ellipse2D ellipse;
 	private boolean barreira = false;
 	private boolean ultimaCasa = false;
-
+	private boolean podeSair = false;
+	
 	public Peca(int id, int x, int y, int numCasa) {
 		this.id = id;
 		this.x = x;
@@ -27,7 +29,21 @@ public class Peca {
 		return id;
 	}
 
+	public int getUltimoMovimentado() {
+		return ultimoMovimentado;
+	}
 
+	public void setUltimoMovimentado(int ultimoMovimentado) {
+		this.ultimoMovimentado = ultimoMovimentado;
+	}
+
+	public boolean isPodeSair() {
+		return podeSair;
+	}
+
+	public void setPodeSair(boolean podeSair) {
+		this.podeSair = podeSair;
+	}
 
 	public void setId(int id) {
 		this.id = id;
