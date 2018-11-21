@@ -123,9 +123,13 @@ public class Caminho {
 			casas.add(new Casa(300, 50, 0, true));  //abrigo
 			casas.add(new Casa(300, 5, 0, false));
 			casas.add(new Casa(350, 5, 0, false));
-			casas.add(new Casa(400, 5, 0, false));
 			//trilha final
-			
+			casas.add(new Casa(350, 55, 0, false));
+			casas.add(new Casa(350, 105, 0, false));
+			casas.add(new Casa(350, 155, 0, false));
+			casas.add(new Casa(350, 205, 0, false));
+			casas.add(new Casa(350, 255, 0, false));
+			casas.add(new Casa(350, 305, 0, true));
 			
 		}
 		else if(num==3)
