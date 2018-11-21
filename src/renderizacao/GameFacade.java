@@ -208,6 +208,7 @@ public class GameFacade extends Observable{
 					jogador[i].getPecas().get(j).setX(x);
 					jogador[i].getPecas().get(j).setY(y);
 					jogador[i].getPecas().get(j).setNumCasa(0);
+					jogador[i].getPecas().get(j).setPodeSair(false);
 					
 				}
 			}
