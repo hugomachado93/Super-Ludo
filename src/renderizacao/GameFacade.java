@@ -25,6 +25,7 @@ public class GameFacade extends Observable{
 	private Desenhos desenhos;
 	private int dadoVal;
 	private final int MAX_CASAS = 56;
+	private static int ultimoMovimentado = 0;
 	
 	public GameFacade() throws IOException {
 		jogador[0] = new Jogador(1);
@@ -91,9 +92,8 @@ public class GameFacade extends Observable{
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-		dadoVal = dado.getNumDado();
-		
 		if(Dado.dadoClicado) {
+			dadoVal = dado.getNumDado();
 			for(int i=0;i<4;i++) {
 				if(jogador[nJogador].getPecas().get(i).getEllipse().contains(e.getPoint()) && !jogador[nJogador].getPecas().get(i).isUltimaCasa()) {
 					if(!jogador[nJogador].getPecas().get(i).isPodeSair() && dadoVal != 5) {
@@ -106,7 +106,6 @@ public class GameFacade extends Observable{
 							notifyObservers();
 							break;
 						}
-						System.out.println("AQUI2");
 						break;
 					}else if(!jogador[nJogador].getPecas().get(i).isPodeSair() && dadoVal == 5){
 						jogador[nJogador].setPecaIniciada(true);
@@ -116,20 +115,37 @@ public class GameFacade extends Observable{
 						System.out.println("AQUI3");
 						nJogador++;
 						Dado.dadoClicado = false;
+						setChanged();
+						notifyObservers();
 						break;
 					}else {
+						jogador[nJogador].getPecas().get(i).setUltimoMovimentado(ultimoMovimentado++);
 						int val = dadoVal + jogador[nJogador].getPecas().get(i).getNumCasa();
+						
+						int casaInicial = jogador[nJogador].getPecas().get(i).getNumCasa();
+						int xInicial = jogador[nJogador].getPecas().get(i).getX();
+						int yInicial = jogador[nJogador].getPecas().get(i).getY();
 						
 						if(val > MAX_CASAS) {
 							val = MAX_CASAS - (val - MAX_CASAS);
 						}else if(val == MAX_CASAS) {
 							jogador[nJogador].getPecas().get(i).setUltimaCasa(true);
-							break;
 						}
+						
 						
 						jogador[nJogador].getPecas().get(i).setNumCasa(val);
 						jogador[nJogador].getPecas().get(i).setX(jogador[nJogador].getCasas().get(val).getX());
 						jogador[nJogador].getPecas().get(i).setY(jogador[nJogador].getCasas().get(val).getY());
+						
+						comePeca(i, val, nJogador);
+						
+						if(checaBarreira(i, val, dadoVal, nJogador)) {
+							jogador[nJogador].getPecas().get(i).setNumCasa(casaInicial);
+							jogador[nJogador].getPecas().get(i).setX(xInicial);
+							jogador[nJogador].getPecas().get(i).setY(yInicial);
+							System.out.println("Barreira detectada, escolha outra peca");
+							break;
+						}
 						
 						if(dadoVal == 6 && (jogador[nJogador].getNumJogadas() != 2)) {
 							jogador[nJogador].sumNumJogadas();
@@ -148,9 +164,7 @@ public class GameFacade extends Observable{
 							jogador[nJogador].setNumJogadas(0);
 							break;
 						}
-						
-						procuraPeca(i, val, nJogador);
-						
+							
 						jogador[nJogador].setNumJogadas(0);
 						nJogador++;
 						Dado.dadoClicado = false;
@@ -177,7 +191,7 @@ public class GameFacade extends Observable{
 	}
 	
 	
-	private void procuraPeca(int id,int val, int numJogador)
+	private void comePeca(int id,int val, int numJogador)
 	{
 		int x,y,px,py;
 		for(int i=0;i<4;i++)
@@ -186,8 +200,7 @@ public class GameFacade extends Observable{
 			{
 				px = jogador[numJogador].getPecas().get(id).getX();
 				py = jogador[numJogador].getPecas().get(id).getY();
-				if( jogador[i].getPecas().get(j).getX()==px && jogador[i].getPecas().get(j).getY()==py && jogador[numJogador]!=jogador[i] 
-						&& !jogador[numJogador].getPecas().get(i).isBarreira())
+				if( jogador[i].getPecas().get(j).getX()==px && jogador[i].getPecas().get(j).getY()==py && jogador[numJogador]!=jogador[i])
 				{
 					
 					x=jogador[i].getInicialX(j);
@@ -195,12 +208,30 @@ public class GameFacade extends Observable{
 					jogador[i].getPecas().get(j).setX(x);
 					jogador[i].getPecas().get(j).setY(y);
 					jogador[i].getPecas().get(j).setNumCasa(0);
-					break;
-
+					
 				}
 			}
 		}
-		
+	}
+	
+	private boolean checaBarreira(int id, int val, int dadoVal, int numJogador) {
+		int px,py;
+		for(int i=(val-dadoVal);i<val;i++)
+		{
+			for(int j=0; j<4;j++)
+			{
+				for(int k=0;k<4;k++) {	
+					px = jogador[numJogador].getCasas().get(i).getX();
+					py = jogador[numJogador].getCasas().get(i).getY();
+					if( jogador[j].getPecas().get(k).getX()==px && jogador[j].getPecas().get(k).getY()==py && jogador[numJogador]!=jogador[j]
+							&& jogador[j].getPecas().get(k).isBarreira())
+					{
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 	
 }

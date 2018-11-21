@@ -14,6 +14,7 @@ public class Peca {
 	private int numCasa;
 	private int ultimoMovimentado = 0;
 	private Ellipse2D ellipse;
+	private boolean abrigo = false;
 	private boolean barreira = false;
 	private boolean ultimaCasa = false;
 	private boolean podeSair = false;
@@ -49,7 +50,13 @@ public class Peca {
 		this.id = id;
 	}
 
+	public boolean isAbrigo() {
+		return abrigo;
+	}
 
+	public void setAbrigo(boolean abrigo) {
+		this.abrigo = abrigo;
+	}
 
 	public int getX() {
 		return x;
