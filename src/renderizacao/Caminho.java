@@ -124,6 +124,8 @@ public class Caminho {
 			casas.add(new Casa(300, 5, 0, false));
 			casas.add(new Casa(350, 5, 0, false));
 			casas.add(new Casa(400, 5, 0, false));
+			//trilha final
+			
 			
 		}
 		else if(num==3)
@@ -180,12 +182,12 @@ public class Caminho {
 			casas.add(new Casa(695, 300, 0, false));
 			casas.add(new Casa(695, 350, 0, false));
 			//trilha final
-			casas.add(new Casa(345, 690, 0, false));
-			casas.add(new Casa(295, 690, 0, false));
-			casas.add(new Casa(245, 690, 0, false));
-			casas.add(new Casa(195, 690, 0, false));
-			casas.add(new Casa(145, 690, 0, false));
-			casas.add(new Casa(95, 690, 0, true));
+			casas.add(new Casa(645, 350, 0, false));
+			casas.add(new Casa(595, 350, 0, false));
+			casas.add(new Casa(545, 350, 0, false));
+			casas.add(new Casa(495, 350, 0, false));
+			casas.add(new Casa(445, 350, 0, false));
+			casas.add(new Casa(395, 350, 0, true));
 			
 		}
 		else if(num==4)
