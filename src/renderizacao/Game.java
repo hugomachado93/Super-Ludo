@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 
 public class Game extends JPanel{
 	private static final long serialVersionUID = 1L;
-	
+	private JButton[] bDebug;
 	private GameFacade gameFacade = new GameFacade();
 	private Stroke defaultStroke;
 	
@@ -33,7 +33,11 @@ public class Game extends JPanel{
 	private void GUI() {
 		setLayout(null);
 		add(gameFacade.eventDado());
-		//add(gameFacade.DadoDebug());
+		bDebug = gameFacade.eventDebugDado();
+		
+		for(int i=0;i<6;i++) {
+			add(bDebug[i]);
+		}
 		
 		gameFacade.addObserver((obj, arg)-> {
 			System.out.println("Repainting");
@@ -46,6 +50,7 @@ public class Game extends JPanel{
 				gameFacade.mouseClicked(e);
 			}
 		});
+		
 	}
 	
 	@Override

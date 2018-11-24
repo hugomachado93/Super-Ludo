@@ -12,7 +12,7 @@ public class Caminho {
 	public Caminho(int num) {
 		if(num == 1)  //vermelho
 		{
-			casas.add(new Casa(50,300,0, false));   // casa de saida do vermelho
+			casas.add(new Casa(50,300,0, true));   // casa de saida do vermelho
 			casas.add(new Casa(100, 300, 0, false));
 			casas.add(new Casa(150, 300, 0, false));
 			casas.add(new Casa(200, 300, 0, false));
@@ -25,7 +25,7 @@ public class Caminho {
 			casas.add(new Casa(300, 5, 0, false));
 			casas.add(new Casa(350, 5, 0, false));
 			casas.add(new Casa(400, 5, 0, false));
-			casas.add(new Casa(400, 50, 0, false));  // casa de saida do verde
+			casas.add(new Casa(400, 50, 0, true));  // casa de saida do verde
 			casas.add(new Casa(400, 100, 0, false));
 			casas.add(new Casa(400, 150, 0, false));
 			casas.add(new Casa(400, 200, 0, false));
@@ -38,7 +38,7 @@ public class Caminho {
 			casas.add(new Casa(695, 300, 0, false));
 			casas.add(new Casa(695, 350, 0, false));
 			casas.add(new Casa(695, 395, 0, false));
-			casas.add(new Casa(640, 395, 0, false));  // casa de saida do amarelo
+			casas.add(new Casa(640, 395, 0, true));  // casa de saida do amarelo
 			casas.add(new Casa(590, 395, 0, false));
 			casas.add(new Casa(540, 395, 0, false));
 			casas.add(new Casa(495, 395, 0, false));
@@ -51,7 +51,7 @@ public class Caminho {
 			casas.add(new Casa(395, 690, 0, false));
 			casas.add(new Casa(345, 690, 0, false));
 			casas.add(new Casa(300, 690, 0, false));
-			casas.add(new Casa(300, 640, 0, false)); // casa de saida do azul
+			casas.add(new Casa(300, 640, 0, true)); // casa de saida do azul
 			casas.add(new Casa(300, 590, 0, false));
 			casas.add(new Casa(300, 540, 0, false));
 			casas.add(new Casa(300, 495, 0, false));
@@ -74,7 +74,7 @@ public class Caminho {
 			
 		}else if(num == 2)  //verde
 		{
-			casas.add(new Casa(400, 50, 0, false));  //casa de saida do verde
+			casas.add(new Casa(400, 50, 0, true));  //casa de saida do verde
 			casas.add(new Casa(400, 100, 0, false));
 			casas.add(new Casa(400, 150, 0, false));
 			casas.add(new Casa(400, 200, 0, false));
@@ -87,7 +87,7 @@ public class Caminho {
 			casas.add(new Casa(695, 300, 0, false));
 			casas.add(new Casa(695, 350, 0, false));
 			casas.add(new Casa(695, 395, 0, false));
-			casas.add(new Casa(640, 395, 0, false));  //casa de saida do amarelo
+			casas.add(new Casa(640, 395, 0, true));  //casa de saida do amarelo
 			casas.add(new Casa(590, 395, 0, false));
 			casas.add(new Casa(540, 395, 0, false));
 			casas.add(new Casa(495, 395, 0, false));
@@ -100,7 +100,7 @@ public class Caminho {
 			casas.add(new Casa(395, 690, 0, false));
 			casas.add(new Casa(345, 690, 0, false));
 			casas.add(new Casa(300, 690, 0, false));
-			casas.add(new Casa(300, 640, 0, false));  // casa de saida do azul
+			casas.add(new Casa(300, 640, 0, true));  // casa de saida do azul
 			casas.add(new Casa(300, 590, 0, false));
 			casas.add(new Casa(300, 540, 0, false));
 			casas.add(new Casa(300, 495, 0, false));
@@ -113,7 +113,7 @@ public class Caminho {
 			casas.add(new Casa(5, 395, 0, false));
 			casas.add(new Casa(5, 345, 0, false));
 			casas.add(new Casa(5, 295, 0, false));
-			casas.add(new Casa(50,300,0, false));  // casa de saida do vermelho
+			casas.add(new Casa(50,300,0, true));  // casa de saida do vermelho
 			casas.add(new Casa(100, 300, 0, false));
 			casas.add(new Casa(150, 300, 0, false));
 			casas.add(new Casa(200, 300, 0, false));
@@ -136,7 +136,7 @@ public class Caminho {
 		}
 		else if(num==3)  //azul
 		{
-			casas.add(new Casa(300, 640, 0, false));  // casa de saida do azul
+			casas.add(new Casa(300, 640, 0, true));  // casa de saida do azul
 			casas.add(new Casa(300, 590, 0, false));
 			casas.add(new Casa(300, 540, 0, false));
 			casas.add(new Casa(300, 495, 0, false));
@@ -149,7 +149,7 @@ public class Caminho {
 			casas.add(new Casa(5, 395, 0, false));
 			casas.add(new Casa(5, 345, 0, false));
 			casas.add(new Casa(5, 295, 0, false));
-			casas.add(new Casa(50,300,0, false));     //casa de saida do vermelho
+			casas.add(new Casa(50,300,0, true));     //casa de saida do vermelho
 			casas.add(new Casa(100, 300, 0, false));
 			casas.add(new Casa(150, 300, 0, false));
 			casas.add(new Casa(200, 300, 0, false));
@@ -162,7 +162,7 @@ public class Caminho {
 			casas.add(new Casa(300, 5, 0, false));
 			casas.add(new Casa(350, 5, 0, false));
 			casas.add(new Casa(400, 5, 0, false));
-			casas.add(new Casa(400, 50, 0, false));  // casa de saida do verde
+			casas.add(new Casa(400, 50, 0, true));  // casa de saida do verde
 			casas.add(new Casa(400, 100, 0, false));
 			casas.add(new Casa(400, 150, 0, false));
 			casas.add(new Casa(400, 200, 0, false));
@@ -175,7 +175,7 @@ public class Caminho {
 			casas.add(new Casa(695, 300, 0, false));
 			casas.add(new Casa(695, 350, 0, false));
 			casas.add(new Casa(695, 395, 0, false));
-			casas.add(new Casa(640, 395, 0, false));  //casa de saida do amarelo
+			casas.add(new Casa(640, 395, 0, true));  //casa de saida do amarelo
 			casas.add(new Casa(590, 395, 0, false));
 			casas.add(new Casa(540, 395, 0, false));
 			casas.add(new Casa(495, 395, 0, false));
@@ -199,7 +199,7 @@ public class Caminho {
 		else if(num==4) //amarelo
 		{
 			
-			casas.add(new Casa(640, 395, 0, false));  //casa de saida do amarelo
+			casas.add(new Casa(640, 395, 0, true));  //casa de saida do amarelo
 			casas.add(new Casa(590, 395, 0, false));
 			casas.add(new Casa(540, 395, 0, false));
 			casas.add(new Casa(495, 395, 0, false));
@@ -212,7 +212,7 @@ public class Caminho {
 			casas.add(new Casa(395, 690, 0, false));
 			casas.add(new Casa(345, 690, 0, false));
 			casas.add(new Casa(300, 690, 0, false));
-			casas.add(new Casa(300, 640, 0, false));  // casa de saida do azul
+			casas.add(new Casa(300, 640, 0, true));  // casa de saida do azul
 			casas.add(new Casa(300, 590, 0, false));
 			casas.add(new Casa(300, 540, 0, false));
 			casas.add(new Casa(300, 495, 0, false));
@@ -225,7 +225,7 @@ public class Caminho {
 			casas.add(new Casa(5, 395, 0, false));
 			casas.add(new Casa(5, 345, 0, false));
 			casas.add(new Casa(5, 295, 0, false));
-			casas.add(new Casa(50,300,0, false));     //casa de saida do vermelho
+			casas.add(new Casa(50,300,0, true));     //casa de saida do vermelho
 			casas.add(new Casa(100, 300, 0, false));
 			casas.add(new Casa(150, 300, 0, false));
 			casas.add(new Casa(200, 300, 0, false));
@@ -238,7 +238,7 @@ public class Caminho {
 			casas.add(new Casa(300, 5, 0, false));
 			casas.add(new Casa(350, 5, 0, false));
 			casas.add(new Casa(400, 5, 0, false));
-			casas.add(new Casa(400, 50, 0, false));  // casa de saida do verde
+			casas.add(new Casa(400, 50, 0, true));  // casa de saida do verde
 			casas.add(new Casa(400, 100, 0, false));
 			casas.add(new Casa(400, 150, 0, false));
 			casas.add(new Casa(400, 200, 0, false));
