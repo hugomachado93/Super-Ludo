@@ -81,4 +81,36 @@ public class Desenhos {
 		g2d.setStroke(defaultStroke);
 	}
 	
+	public void PecaNaMesmaCasaCoresDiferentes(Jogador[] jogador, Graphics2D g2d, Stroke defaultStroke) {
+
+		g2d.setStroke(new BasicStroke(2));
+		for(int w=0;w<4;w++) {
+			for(int i=0;i<4;i++)
+			{
+				for(int j=0; j<4;j++)
+				{
+					for(int k=0;k<4;k++) {
+						int px = jogador[w].getPecas().get(i).getX();
+						int py = jogador[w].getPecas().get(i).getY();
+						if(jogador[j].getPecas().get(k).getX()==px && jogador[j].getPecas().get(k).getY()==py
+								&& jogador[w] != jogador[j]) {
+							if(j == 0) {
+								g2d.setColor(Color.RED);
+							}else if(j == 1) {
+								g2d.setColor(Color.GREEN);
+							}else if(j == 2) {
+								g2d.setColor(Color.BLUE);
+							}else {
+								g2d.setColor(Color.YELLOW);
+							}
+								g2d.drawOval(jogador[w].getPecas().get(i).getX()-2, jogador[w].getPecas().get(i).getY()-2, 45, 45);
+						}
+					}
+				}
+			}
+		}
+		g2d.setStroke(defaultStroke);
+	}
+	
 }
+

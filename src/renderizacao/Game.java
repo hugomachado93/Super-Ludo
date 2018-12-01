@@ -11,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -28,6 +29,7 @@ public class Game extends JPanel{
 	private Jogador[] jogador;
 	private Desenhos desenhos = new Desenhos();
 	private JButton[] bDebug = new JButton[6];
+	private JButton[] menu = new JButton[3];
 	private int nJogador;
 	private JButton bDice;
 	Dado dado = new Dado();
@@ -43,15 +45,25 @@ public class Game extends JPanel{
 		bDebug[4] = new JButton("5");
 		bDebug[5] = new JButton("6");
 	
+		menu[0] = new JButton("Novo jogo");
+		menu[1] = new JButton("Salvar");
+		menu[2] = new JButton("Carregar");
+		
 		GUI();
 	}
 	
 	private void GUI() {
 		setLayout(null);
 		bDebug = eventDebugDado();
+		menu = eventMenu();
 		add(eventDado());
+		
 		for(int i=0;i<6;i++) {
 			add(bDebug[i]);
+		}
+		
+		for(int i=0;i<3;i++) {
+			add(menu[i]);
 		}
 		
 		addMouseListener(new MouseAdapter() {
@@ -59,6 +71,7 @@ public class Game extends JPanel{
 			public void mousePressed(MouseEvent e) {
 				gameFacade.mouseClicked(e);
 				repaint();
+				gameFacade.jogoAcabou();
 			}
 		});
 		
@@ -71,6 +84,7 @@ public class Game extends JPanel{
 		defaultStroke = g2d.getStroke();
 		DesenhaTodasAsPecas(g2d);
 		DrawAll(g2d, defaultStroke);
+		desenhos.PecaNaMesmaCasaCoresDiferentes(jogador, g2d, defaultStroke);
 		
 	}
 	
@@ -211,6 +225,48 @@ public class Game extends JPanel{
 			 }
 		});
 		return bDice;
+	}
+	
+	public JButton[] eventMenu() {
+		menu[0].setBounds(1000, 200, 100, 50);
+		menu[0].addMouseListener(new MouseAdapter() {  // novo jogo
+			@Override
+			 public void mouseClicked(MouseEvent e) {
+				gameFacade.zerarPartida();
+				repaint();
+			 }
+		});
+		
+		menu[1].setBounds(1000, 140, 100, 50);
+		menu[1].addMouseListener(new MouseAdapter() {  //salvar
+			@Override
+			 public void mouseClicked(MouseEvent e) {
+				try {
+					gameFacade.salvamento();
+				} catch (IOException e1) {
+					System.out.println("teste");
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				repaint();
+			 }
+		});
+		
+		menu[2].setBounds(1000, 80, 100, 50);
+		menu[2].addMouseListener(new MouseAdapter() {  //carregar
+			@Override
+			 public void mouseClicked(MouseEvent e) {
+				try {
+					gameFacade.carregamento();
+					
+				} catch (FileNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				repaint();
+			 }
+		});
+		return menu;
 	}
 	
 }
