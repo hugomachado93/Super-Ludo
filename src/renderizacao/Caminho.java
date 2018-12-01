@@ -70,7 +70,7 @@ public class Caminho {
 			casas.add(new Casa(150, 345, 0, false));
 			casas.add(new Casa(200, 345, 0, false));
 			casas.add(new Casa(250, 345, 0, false));
-			casas.add(new Casa(300, 345, 0, true));
+			casas.add(new Casa(300, 345, 0, false));
 			
 		}else if(num == 2)  //verde
 		{
@@ -131,7 +131,7 @@ public class Caminho {
 			casas.add(new Casa(350, 155, 0, false));
 			casas.add(new Casa(350, 205, 0, false));
 			casas.add(new Casa(350, 255, 0, false));
-			casas.add(new Casa(350, 305, 0, true));
+			casas.add(new Casa(350, 305, 0, false));
 			
 		}
 		else if(num==3)  //azul
@@ -193,7 +193,7 @@ public class Caminho {
 			casas.add(new Casa(345, 540, 0, false));
 			casas.add(new Casa(345, 490, 0, false));
 			casas.add(new Casa(345, 440, 0, false));
-			casas.add(new Casa(345, 390, 0, true));
+			casas.add(new Casa(345, 390, 0, false));
 			
 		}
 		else if(num==4) //amarelo
@@ -256,7 +256,7 @@ public class Caminho {
 			casas.add(new Casa(545, 350, 0, false));
 			casas.add(new Casa(495, 350, 0, false));
 			casas.add(new Casa(445, 350, 0, false));
-			casas.add(new Casa(395, 350, 0, true));
+			casas.add(new Casa(395, 350, 0, false));
 		}
 		
 	}

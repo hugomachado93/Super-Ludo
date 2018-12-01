@@ -15,213 +15,88 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-public class GameFacade extends Observable{
+public class GameFacade{
 
-	private static int nJogador = new Random().nextInt(2);
 	private Jogador[] jogador = new Jogador[4];
-	private JButton[] bDebug = new JButton[6];
-	private JButton bDice;
 	private Dado dado;
-	private Desenhos desenhos;
 	private int dadoVal;
 	private final int MAX_CASAS = 56;
 	private static int ultimoMovimentado = 0;
-	private int dadoValDebug;
+	private boolean mov[]=new boolean[4];
+	boolean jogoAcabou = false;
+	private static int nJogador = new Random().nextInt(2);
+	private int ultimoMov=0;
 	
 	public GameFacade() throws IOException {
+		mov[0]=true;
+		mov[1]=true;
+		mov[2]=true;
+		mov[3]=true;
 		jogador[0] = new Jogador(1);
 		jogador[1] = new Jogador(2);
 		jogador[2] = new Jogador(3);
 		jogador[3] = new Jogador(4);
-		
-		bDice = new JButton("Dado");
+	
 		dado = new Dado();
-		desenhos = new Desenhos();
-		
-		bDebug[0] = new JButton("1");
-		bDebug[1] = new JButton("2");
-		bDebug[2] = new JButton("3");
-		bDebug[3] = new JButton("4");
-		bDebug[4] = new JButton("5");
-		bDebug[5] = new JButton("6");
-
-	}
-
-	public void DesenhaTodasAsPecas(Graphics2D g2d) {
-		//printa as pecas
-			for(int i=0;i<4;i++) {
-				g2d.setColor(new Color(150, 0, 0));
-				jogador[0].getPecas().get(i).setEllipse(new Ellipse2D.Double(jogador[0].getPecas().get(i).getX(), jogador[0].getPecas().get(i).getY(), 40, 40));
-				g2d.fill(jogador[0].getPecas().get(i).getEllipse());
-
-			}
-				
-			for(int i=0;i<4;i++) {
-				g2d.setColor(new Color(0, 150, 0));
-				jogador[1].getPecas().get(i).setEllipse(new Ellipse2D.Double(jogador[1].getPecas().get(i).getX(), jogador[1].getPecas().get(i).getY(), 40, 40));
-				g2d.fill(jogador[1].getPecas().get(i).getEllipse());
-			}
-				
-			for(int i=0;i<4;i++) {
-				g2d.setColor(new Color(0, 0, 150));
-				jogador[2].getPecas().get(i).setEllipse(new Ellipse2D.Double(jogador[2].getPecas().get(i).getX(), jogador[2].getPecas().get(i).getY(), 40, 40));
-				g2d.fill(jogador[2].getPecas().get(i).getEllipse());
-			}
-				
-			for(int i=0;i<4;i++) {
-				g2d.setColor(new Color(150, 150, 0));
-				jogador[3].getPecas().get(i).setEllipse(new Ellipse2D.Double(jogador[3].getPecas().get(i).getX(), jogador[3].getPecas().get(i).getY(), 40, 40));
-				g2d.fill(jogador[3].getPecas().get(i).getEllipse());
-			}
-	}
-	
-	public void DrawAll(Graphics2D g2d, Stroke defaultStroke) {
-		Tabuleiro.getTabuleiro().paintTabuleiro(g2d);
-		DrawDado(g2d);
-		DiceColor(g2d, defaultStroke);
-		DesenhaTodasAsPecas(g2d);
-		PecaNaMesmaCasa(g2d, defaultStroke);
-	}
-	
-	public JButton eventDado() {
-		bDice.setBounds(1000, 400, 100, 50);
-		bDice.addMouseListener(new MouseAdapter() {
-			@Override
-			 public void mouseClicked(MouseEvent e) {
-				if(!Dado.dadoClicado) {
-					dado.getRandNumDado();
-					setChanged();
-					notifyObservers();
-				}
-				Dado.dadoClicado = true;
-			 }
-		});
-		return bDice;
-	}
-	
-	public JButton[] eventDebugDado() {
-			bDebug[0].setBounds(950, 650, 50, 50);
-			bDebug[0].addMouseListener(new MouseAdapter() {
-				@Override
-				 public void mouseClicked(MouseEvent e) {
-					if(!Dado.dadoClicado) {
-						dado.setNumDado(1);
-						setChanged();
-						notifyObservers();
-					}
-					Dado.dadoClicado = true;
-				 }
-			});
-			
-			bDebug[1].setBounds(1000, 650, 50, 50);
-			bDebug[1].addMouseListener(new MouseAdapter() {
-				@Override
-				 public void mouseClicked(MouseEvent e) {
-					if(!Dado.dadoClicado) {
-						dado.setNumDado(2);
-						setChanged();
-						notifyObservers();
-					}
-					Dado.dadoClicado = true;
-				 }
-			});
-			
-			bDebug[2].setBounds(1050, 650, 50, 50);
-			bDebug[2].addMouseListener(new MouseAdapter() {
-				@Override
-				 public void mouseClicked(MouseEvent e) {
-					if(!Dado.dadoClicado) {
-						dado.setNumDado(3);
-						setChanged();
-						notifyObservers();
-					}
-					Dado.dadoClicado = true;
-				 }
-			});
-			
-			bDebug[3].setBounds(1100, 650, 50, 50);
-			bDebug[3].addMouseListener(new MouseAdapter() {
-				@Override
-				 public void mouseClicked(MouseEvent e) {
-					if(!Dado.dadoClicado) {
-						dado.setNumDado(4);
-						setChanged();
-						notifyObservers();
-					}
-					Dado.dadoClicado = true;
-				 }
-			});
-			
-			bDebug[4].setBounds(1150, 650, 50, 50);
-			bDebug[4].addMouseListener(new MouseAdapter() {
-				@Override
-				 public void mouseClicked(MouseEvent e) {
-					if(!Dado.dadoClicado) {
-						dado.setNumDado(5);
-						setChanged();
-						notifyObservers();
-					}
-					Dado.dadoClicado = true;
-				 }
-			});
-			
-			bDebug[5].setBounds(1200, 650, 50, 50);
-			bDebug[5].addMouseListener(new MouseAdapter() {
-				@Override
-				 public void mouseClicked(MouseEvent e) {
-					if(!Dado.dadoClicado) {
-						dado.setNumDado(6);
-						setChanged();
-						notifyObservers();
-					}
-					Dado.dadoClicado = true;
-				 }
-			});
-			
-		return bDebug;
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-		
 		todasPecasNoIncio();
 		
-		if(Dado.dadoClicado) {
+		if(Dado.dadoClicado && !jogoAcabou) {
 			dadoVal = dado.getNumDado();
 			for(int i=0;i<4;i++) {
 				if(jogador[nJogador].getPecas().get(i).getEllipse().contains(e.getPoint()) && !jogador[nJogador].getPecas().get(i).isUltimaCasa()) {
 					if(!jogador[nJogador].getPecas().get(i).isPodeSair() && dadoVal != 5) {
 						if(!jogador[nJogador].isPecaIniciada()) {
+							int x=jogador[nJogador].getInicialX(i);
+							int y=jogador[nJogador].getInicialY(i);
+							jogador[nJogador].getPecas().get(i).setX(jogador[nJogador].getCasas().get(0).getX());
+							jogador[nJogador].getPecas().get(i).setY(jogador[nJogador].getCasas().get(0).getY());
+							if(comePeca(i, 0, nJogador, 0, x, y)) {
+								mov[i] = false;
+								break;
+							}
+							jogador[nJogador].setNumJogadas(0);
 							jogador[nJogador].setPecaIniciada(true);
-							jogador[nJogador].getPecas().get(0).setPodeSair(true);
-							jogador[nJogador].getPecas().get(0).setX(jogador[nJogador].getCasas().get(0).getX());
-							jogador[nJogador].getPecas().get(0).setY(jogador[nJogador].getCasas().get(0).getY());
-							setChanged();
-							notifyObservers();
+							jogador[nJogador].getPecas().get(i).setPodeSair(true);
 							break;
 						}
+						mov[i] = false;
 						break;
 					}else if(!jogador[nJogador].getPecas().get(i).isPodeSair() && dadoVal == 5){
+						int x=jogador[nJogador].getInicialX(i);
+						int y=jogador[nJogador].getInicialY(i);
 						if(!jogador[nJogador].isPecaIniciada()) {
+							jogador[nJogador].getPecas().get(i).setX(jogador[nJogador].getCasas().get(0).getX());
+							jogador[nJogador].getPecas().get(i).setY(jogador[nJogador].getCasas().get(0).getY());
+							if(comePeca(i, 0, nJogador, 0, x, y)) {
+								mov[i]=false;
+								break;
+							}
 							jogador[nJogador].setPecaIniciada(true);
-							jogador[nJogador].getPecas().get(0).setPodeSair(true);
-							jogador[nJogador].getPecas().get(0).setX(jogador[nJogador].getCasas().get(0).getX());
-							jogador[nJogador].getPecas().get(0).setY(jogador[nJogador].getCasas().get(0).getY());
-							setChanged();
-							notifyObservers();
+							jogador[nJogador].getPecas().get(i).setPodeSair(true);
 							break;
 						}
-						jogador[nJogador].setPecaIniciada(true);
-						jogador[nJogador].getPecas().get(i).setPodeSair(true);
 						jogador[nJogador].getPecas().get(i).setX(jogador[nJogador].getCasas().get(0).getX());
 						jogador[nJogador].getPecas().get(i).setY(jogador[nJogador].getCasas().get(0).getY());
-						System.out.println("AQUI3");
+						if(comePeca(i, 0, nJogador, 0, x, y)) {
+							mov[i]=false;
+							break;
+						}
+						jogador[nJogador].setNumJogadas(0);
+						jogador[nJogador].setPecaIniciada(true);
+						jogador[nJogador].getPecas().get(i).setPodeSair(true);
 						nJogador++;
 						Dado.dadoClicado = false;
-						setChanged();
-						notifyObservers();
 						break;
 					}else {
-						jogador[nJogador].getPecas().get(i).setUltimoMovimentado(ultimoMovimentado++);
+						
+						/*
+						if(saidaObrigatoria(i, nJogador, dadoVal)) {
+							break;
+						}
+						*/
 						
 						int val = dadoVal + jogador[nJogador].getPecas().get(i).getNumCasa();
 						
@@ -236,81 +111,83 @@ public class GameFacade extends Observable{
 						}
 						
 						if(dadoVal == 6 && (jogador[nJogador].getNumJogadas() != 2)) {
-							jogador[nJogador].sumNumJogadas();
+							i = procuraBarreira(i, nJogador);
 							jogador[nJogador].getPecas().get(i).setNumCasa(val);
 							jogador[nJogador].getPecas().get(i).setX(jogador[nJogador].getCasas().get(val).getX());
 							jogador[nJogador].getPecas().get(i).setY(jogador[nJogador].getCasas().get(val).getY());
-							
-							if(comePeca(i, val, nJogador, casaInicial, xInicial, yInicial)) {
-								break;
-							}
 							
 							if(checaBarreira(i, val, dadoVal, nJogador)) {
 								jogador[nJogador].getPecas().get(i).setNumCasa(casaInicial);
 								jogador[nJogador].getPecas().get(i).setX(xInicial);
 								jogador[nJogador].getPecas().get(i).setY(yInicial);
 								System.out.println("Barreira detectada, escolha outra peca");
+								mov[i]=false;
 								break;
 							}
 							
+							if(comePeca(i, val, nJogador, casaInicial, xInicial, yInicial)) {
+								mov[i]=false;
+								break;
+							}
+							
+							ultimoMov = i;
+							jogador[nJogador].sumNumJogadas();
 							Dado.dadoClicado = false;
 							break;
 						}else if (dadoVal == 6 && (jogador[nJogador].getNumJogadas() == 2)){
-							int peca = ProcuraUltimaPecaMovimentada(nJogador, i);
-							jogador[nJogador].getPecas().get(peca).setX(jogador[nJogador].getInicialX(peca));
-							jogador[nJogador].getPecas().get(peca).setY(jogador[nJogador].getInicialY(peca));
-							jogador[nJogador].getPecas().get(peca).setNumCasa(0);
+							i = procuraBarreira(i, nJogador);
+							//int peca = ProcuraUltimaPecaMovimentada(nJogador, i);
+							jogador[nJogador].getPecas().get(ultimoMov).setX(jogador[nJogador].getInicialX(ultimoMov));
+							jogador[nJogador].getPecas().get(ultimoMov).setY(jogador[nJogador].getInicialY(ultimoMov));
+							jogador[nJogador].getPecas().get(ultimoMov).setNumCasa(0);
 							jogador[nJogador].setNumJogadas(0);
-							jogador[nJogador].getPecas().get(peca).setPodeSair(false);
+							jogador[nJogador].getPecas().get(ultimoMov).setPodeSair(false);
 							nJogador++;
 							Dado.dadoClicado = false;
 							break;
 						}
 						
+						jogador[nJogador].setNumJogadas(0);
+						
 						jogador[nJogador].getPecas().get(i).setNumCasa(val);
 						jogador[nJogador].getPecas().get(i).setX(jogador[nJogador].getCasas().get(val).getX());
 						jogador[nJogador].getPecas().get(i).setY(jogador[nJogador].getCasas().get(val).getY());
-						
-						if(comePeca(i, val, nJogador, casaInicial, xInicial, yInicial)) {
-							break;
-						}
 						
 						if(checaBarreira(i, val, dadoVal, nJogador)) {
 							jogador[nJogador].getPecas().get(i).setNumCasa(casaInicial);
 							jogador[nJogador].getPecas().get(i).setX(xInicial);
 							jogador[nJogador].getPecas().get(i).setY(yInicial);
 							System.out.println("Barreira detectada, escolha outra peca");
+							mov[i]=false;
 							break;
 						}
-							
-						jogador[nJogador].setNumJogadas(0);
-						nJogador++;
+						
+						if(comePeca(i, val, nJogador, casaInicial, xInicial, yInicial)) {
+							mov[i]=false;
+							break;
+						}
+						
 						Dado.dadoClicado = false;
+						nJogador++;
 						break;
 					}
 				}
 			}
+			if(temMovimento()) {
+				mov[0]=true;
+				mov[1]=true;
+				mov[2]=true;
+				mov[3]=true;
+				nJogador++;
+				Dado.dadoClicado = false;
+			}
 		}
-		setChanged();
-		notifyObservers();
+		
+		jogoAcabou();
 		nJogador = (nJogador == 2) ? 0: nJogador;
 	}
 	
-	public void DiceColor(Graphics2D g2d, Stroke defaultStroke) {
-		desenhos.diceColor(g2d, nJogador, defaultStroke);
-	}
-	
-	public void PecaNaMesmaCasa(Graphics2D g2d, Stroke defaultStroke) {
-		desenhos.PecaNaMesmaCasa(jogador, g2d, defaultStroke);
-	}
-	
-	public void DrawDado(Graphics2D g2d) {
-		dado.drawDado(g2d);
-	}
-	
-	
-	private boolean comePeca(int id,int val, int numJogador, int casaInicial, int xInicial, int yInicial)
-	{
+	private boolean checaCasaInicial(int id, int val, int numJogador) {
 		int x,y,px,py, quant=0;
 		
 		for(int i=0;i<4;i++)
@@ -319,18 +196,20 @@ public class GameFacade extends Observable{
 			{
 				px = jogador[numJogador].getPecas().get(id).getX();
 				py = jogador[numJogador].getPecas().get(id).getY();
-				if( jogador[i].getPecas().get(j).getX()==px && jogador[j].getPecas().get(j).getY()==py && jogador[numJogador]!=jogador[i])
+				if( jogador[i].getPecas().get(j).getX()==px && jogador[i].getPecas().get(j).getY()==py && jogador[numJogador]!=jogador[i])
 				{
 					quant++;
 				}
 				if(jogador[i].getPecas().get(j).getX()==px && jogador[i].getPecas().get(j).getY()==py
-						&& (id != j) && jogador[i].getCasas().get(val).isCasaEspecial()) {
-					System.out.println("COMEPECA!!");
-					jogador[nJogador].getPecas().get(i).setNumCasa(casaInicial);
-					jogador[nJogador].getPecas().get(i).setX(xInicial);
-					jogador[nJogador].getPecas().get(i).setY(yInicial);
+						&& (id != j) && jogador[numJogador] == jogador[i] && jogador[i].getCasas().get(val).isCasaEspecial()) {
+					x=jogador[i].getInicialX(j);
+					y=jogador[i].getInicialY(j);
+					jogador[numJogador].getPecas().get(id).setNumCasa(0);
+					jogador[numJogador].getPecas().get(id).setX(x);
+					jogador[numJogador].getPecas().get(id).setY(y);
 					return true;
 				}
+				
 			}
 		}
 		System.out.println(quant);
@@ -353,9 +232,66 @@ public class GameFacade extends Observable{
 					}else if(jogador[numJogador].getCasas().get(val).isCasaEspecial() && quant < 2){
 						return false;
 					}else {
-						jogador[nJogador].getPecas().get(i).setNumCasa(casaInicial);
-						jogador[nJogador].getPecas().get(i).setX(xInicial);
-						jogador[nJogador].getPecas().get(i).setY(yInicial);
+						x=jogador[i].getInicialX(j);
+						y=jogador[i].getInicialY(j);
+						jogador[numJogador].getPecas().get(id).setNumCasa(0);
+						jogador[numJogador].getPecas().get(id).setX(x);
+						jogador[numJogador].getPecas().get(id).setY(y);
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
+	private boolean comePeca(int id,int val, int numJogador, int casaInicial, int xInicial, int yInicial)
+	{
+		int x,y,px,py, quant=0;
+		
+		for(int i=0;i<4;i++)
+		{
+			for(int j=0; j<4;j++)
+			{
+				px = jogador[numJogador].getPecas().get(id).getX();
+				py = jogador[numJogador].getPecas().get(id).getY();
+				if( jogador[i].getPecas().get(j).getX()==px && jogador[i].getPecas().get(j).getY()==py && jogador[numJogador]!=jogador[i])
+				{
+					quant++;
+				}
+				if(jogador[i].getPecas().get(j).getX()==px && jogador[i].getPecas().get(j).getY()==py
+						&& (id != j) && jogador[numJogador] == jogador[i] && jogador[i].getCasas().get(val).isCasaEspecial()) {
+					jogador[numJogador].getPecas().get(id).setNumCasa(casaInicial);
+					jogador[numJogador].getPecas().get(id).setX(xInicial);
+					jogador[numJogador].getPecas().get(id).setY(yInicial);
+					return true;
+				}
+				
+			}
+		}
+		System.out.println(quant);
+		for(int i=0;i<4;i++)
+		{
+			for(int j=0; j<4;j++)
+			{
+				px = jogador[numJogador].getPecas().get(id).getX();
+				py = jogador[numJogador].getPecas().get(id).getY();
+				if( jogador[i].getPecas().get(j).getX()==px && jogador[i].getPecas().get(j).getY()==py && jogador[numJogador]!=jogador[i])
+				{
+					if(!jogador[numJogador].getCasas().get(val).isCasaEspecial()) {
+						x=jogador[i].getInicialX(j);
+						y=jogador[i].getInicialY(j);
+						jogador[i].getPecas().get(j).setX(x);
+						jogador[i].getPecas().get(j).setY(y);
+						jogador[i].getPecas().get(j).setNumCasa(0);
+						jogador[i].getPecas().get(j).setPodeSair(false);
+						return false;
+					}else if(jogador[numJogador].getCasas().get(val).isCasaEspecial() && quant < 2){
+						return false;
+					}else {
+						jogador[numJogador].getPecas().get(id).setNumCasa(casaInicial);
+						jogador[numJogador].getPecas().get(id).setX(xInicial);
+						jogador[numJogador].getPecas().get(id).setY(yInicial);
 						return true;
 					}
 				}
@@ -367,14 +303,14 @@ public class GameFacade extends Observable{
 	private boolean checaBarreira(int id, int val, int dadoVal, int numJogador) {
 		int px,py;
 		
-		for(int i=(val-dadoVal);i<val;i++)
+		for(int i=(val-(dadoVal));i<val;i++)
 		{
 			for(int j=0; j<4;j++)
 			{
 				for(int k=0;k<4;k++) {	
 					px = jogador[numJogador].getCasas().get(i).getX();
 					py = jogador[numJogador].getCasas().get(i).getY();
-					if( jogador[j].getPecas().get(k).getX()==px && jogador[j].getPecas().get(k).getY()==py && jogador[numJogador]!=jogador[j]
+					if( jogador[j].getPecas().get(k).getX()==px && jogador[j].getPecas().get(k).getY()==py
 							&& jogador[j].getPecas().get(k).isBarreira())
 					{
 						return true;
@@ -382,7 +318,30 @@ public class GameFacade extends Observable{
 				}
 			}
 		}
+		
+		for(int i=0; i<4;i++)
+		{
+			for(int j=0;j<4;j++) {	
+				px = jogador[numJogador].getPecas().get(id).getX();
+				py = jogador[numJogador].getPecas().get(id).getY();
+				if( jogador[i].getPecas().get(j).getX()==px && jogador[i].getPecas().get(j).getY()==py 
+						&& !jogador[numJogador].getPecas().get(id).isBarreira() && jogador[i].getPecas().get(j).isBarreira())
+				{
+					return true;
+				}
+			}
+		}
+		
 		return false;
+	}
+	
+	private int procuraBarreira(int id, int numJogador) {
+		for(int i=0;i<4;i++) {
+			if(jogador[numJogador].getPecas().get(i).isBarreira()) {
+				return i;
+			}
+		}
+		return id;
 	}
 	
 	private int ProcuraUltimaPecaMovimentada(int numJogador, int id) {
@@ -404,6 +363,45 @@ public class GameFacade extends Observable{
 				break;
 			}
 		}
+	}
+	
+	private boolean saidaObrigatoria(int id, int numJogador, int dadoVal) {
+		if(dadoVal == 5){
+			
+		}
+		return true;
+	}
+	
+	private boolean temMovimento() {
+		for(int i=0;i<4;i++) {
+			if(mov[i] == true) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	private void jogoAcabou() {
+		int qtd=0;
+		for(int i=0;i<4;i++) {
+			if(jogador[nJogador].getPecas().get(i).isUltimaCasa()) {
+				qtd++;
+			}
+		}
+		
+		if(qtd == 4) {
+			jogoAcabou = true;
+			System.out.println("Jogo acabou. Jogador " + nJogador + " venceu.");
+		}
+		
+	}
+	
+	public Jogador[] getJogador() {
+		return jogador;
+	}
+	
+	public int getNumJogador() {
+		return nJogador;
 	}
 	
 }
