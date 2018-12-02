@@ -18,8 +18,8 @@ import java.util.Collections;
 import java.util.Observable;
 import java.util.Random;
 import java.util.Scanner;
-
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -38,6 +38,7 @@ public class GameFacade{
 	private int jogadorTemp;
 	private File dados;
 	private boolean pecaComida = false;
+	private JFileChooser file = new JFileChooser();
 	
 	private static int turno = nJogador;
 	
@@ -57,6 +58,7 @@ public class GameFacade{
 	
 	public void mouseClicked(MouseEvent e) {
 		jogadorTemp = nJogador; 
+		todasPecasNoIncio();
 		if(Dado.dadoClicado && !jogoAcabou) {
 			dadoVal = dado.getNumDado();
 			
@@ -136,7 +138,6 @@ public class GameFacade{
 								jogador[nJogador].getPecas().get(i).setNumCasa(casaInicial);
 								jogador[nJogador].getPecas().get(i).setX(xInicial);
 								jogador[nJogador].getPecas().get(i).setY(yInicial);
-								System.out.println("Barreira detectada, escolha outra peca");
 								mov[i]=false;
 								break;
 							}
@@ -201,7 +202,7 @@ public class GameFacade{
 			}
 		}
 		
-		nJogador = (nJogador == 2) ? 0: nJogador;
+		nJogador = (nJogador == 3) ? 0: nJogador;
 	}
 	
 	private boolean checaCasaInicial(int id, int val, int numJogador) {
@@ -295,17 +296,23 @@ public class GameFacade{
 				py = jogador[numJogador].getPecas().get(id).getY();
 				if( jogador[i].getPecas().get(j).getX()==px && jogador[i].getPecas().get(j).getY()==py && jogador[numJogador]!=jogador[i])
 				{
-					if(!jogador[numJogador].getCasas().get(val).isCasaEspecial() || !jogador[numJogador].getPecas().get(i).isPodeSair()) {
+					if(!jogador[numJogador].getCasas().get(val).isCasaEspecial()) {
 						x=jogador[i].getInicialX(j);
 						y=jogador[i].getInicialY(j);
 						jogador[i].getPecas().get(j).setX(x);
 						jogador[i].getPecas().get(j).setY(y);
 						jogador[i].getPecas().get(j).setNumCasa(0);
 						jogador[i].getPecas().get(j).setPodeSair(false);
-						dado.setNumDado(6);
-						pecaComida = true;
+						if(jogador[numJogador].getPecas().get(id).isPodeSair()) {
+							dado.setNumDado(6);
+							pecaComida = true;
+						}else {
+							nJogador++;
+							Dado.dadoClicado=false;
+						}
 						return true;
-					}else if(jogador[numJogador].getCasas().get(val).isCasaEspecial() && quant < 2){
+					}else if(jogador[numJogador].getCasas().get(val).isCasaEspecial() && quant < 2 
+							&& (jogador[i].getPecas().get(j).getNumCasa() == 0)){
 						return false;
 					}else {
 						jogador[numJogador].getPecas().get(id).setNumCasa(casaInicial);
@@ -513,51 +520,71 @@ public class GameFacade{
 			wr.write("\n");
 		}
 		wr.write(String.valueOf(nJogador) + " " + String.valueOf(dado.getNumDado()) + " " + String.valueOf(Dado.dadoClicado) + " " + String.valueOf(ultimoMovimentado));
+		wr.write(String.valueOf(ultimoMov) + " " + String.valueOf(jogadorTemp) + " " + String.valueOf(pecaComida)+ " " + String.valueOf(jogoAcabou));
+		wr.write("\n");
+		wr.write(String.valueOf(mov[0])+ " " + String.valueOf(mov[1])+ " " + String.valueOf(mov[2])+ " " + String.valueOf(mov[3]));
 		wr.flush();
 		wr.close();
 	}
 	public void carregamento() throws FileNotFoundException
 	{
-		System.out.println("carregou");
+		int cond;
 		int x,y,num,ultimo;
 		boolean abrigo,barreira,ultimaCasa,podeSair;
 		Peca peca;
-		Scanner rd = new Scanner(dados);
-		for(int i=0;i<4;i++)
+		
+		file.setCurrentDirectory(new java.io.File("."));
+		file.setDialogTitle("Carregamento");
+		file.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		cond = file.showOpenDialog(file);
+		System.out.println(cond);
+		if(cond == JFileChooser.APPROVE_OPTION)
 		{
-			for(int j=0;j<4;j++)
-			{
-				//System.out.print(rd.nextInt() + " " + rd.nextInt() + " " + rd.nextInt() + " " + rd.nextInt() + " ");
-				//System.out.println(rd.nextBoolean() + " " + rd.nextBoolean() + " " + rd.nextBoolean() + " " + rd.nextBoolean());
-				peca = jogador[i].getPecas().get(j);
-				x = rd.nextInt();
-				y = rd.nextInt();
-				num = rd.nextInt();
-				ultimo = rd.nextInt();
-				abrigo = rd.nextBoolean();
-				barreira = rd.nextBoolean();
-				ultimaCasa = rd.nextBoolean();
-				podeSair = rd.nextBoolean();
-				peca.setX(x);
-				peca.setY(y);
-				peca.setNumCasa(num);
-				peca.setUltimoMovimentado(ultimo);
-				peca.setAbrigo(abrigo);
-				peca.setBarreira(barreira);
-				peca.setUltimaCasa(ultimaCasa);
-				peca.setPodeSair(podeSair);
+			System.out.println("carregou");
+			dados = file.getSelectedFile();
+			Scanner teste = new Scanner(dados);
 			
+			Scanner rd = new Scanner(dados);
+			for(int i=0;i<4;i++)
+			{
+				for(int j=0;j<4;j++)
+				{
+					peca = jogador[i].getPecas().get(j);
+					x = rd.nextInt();
+					y = rd.nextInt();
+					num = rd.nextInt();
+					ultimo = rd.nextInt();
+					abrigo = rd.nextBoolean();
+					barreira = rd.nextBoolean();
+					ultimaCasa = rd.nextBoolean();
+					podeSair = rd.nextBoolean();
+					peca.setX(x);
+					peca.setY(y);
+					peca.setNumCasa(num);
+					peca.setUltimoMovimentado(ultimo);
+					peca.setAbrigo(abrigo);
+					peca.setBarreira(barreira);
+					peca.setUltimaCasa(ultimaCasa);
+					peca.setPodeSair(podeSair);
+				
+				}
 			}
-
+			turno = rd.nextInt();
+			nJogador = turno;
+			dado.setNumDado(rd.nextInt());
+			System.out.println(dadoVal);
+			Dado.dadoClicado = rd.nextBoolean();
+			ultimoMovimentado = rd.nextInt();
+			rd.close();
 		}
-		turno = rd.nextInt();
-		nJogador = turno;
-		dado.setNumDado(rd.nextInt());
-		System.out.println(dadoVal);
-		Dado.dadoClicado = rd.nextBoolean();
-		ultimoMovimentado = rd.nextInt();
-
-		rd.close();
+		else if(cond == JFileChooser.CANCEL_OPTION)
+		{
+			System.out.println("carregamento cancelado");
+		}
+		else
+		{
+			System.out.println("ocorreu erro no carregamento");
+		}
 	}
 	public void zerarPartida()
 	{
