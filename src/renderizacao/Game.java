@@ -35,6 +35,7 @@ public class Game extends JPanel{
 	Dado dado = new Dado();
 	
 	public Game() throws IOException {
+		
 		bDice = new JButton("DADO");
 		jogador = gameFacade.getJogador();
 		nJogador = gameFacade.getNumJogador();
@@ -52,7 +53,7 @@ public class Game extends JPanel{
 		GUI();
 	}
 	
-	private void GUI() {
+	private void GUI() throws IOException {
 		setLayout(null);
 		bDebug = eventDebugDado();
 		menu = eventMenu();
@@ -69,6 +70,7 @@ public class Game extends JPanel{
 		addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
+				
 				gameFacade.mouseClicked(e);
 				repaint();
 				gameFacade.jogoAcabou();
@@ -85,7 +87,6 @@ public class Game extends JPanel{
 		DesenhaTodasAsPecas(g2d);
 		DrawAll(g2d, defaultStroke);
 		desenhos.PecaNaMesmaCasaCoresDiferentes(jogador, g2d, defaultStroke);
-		
 	}
 	
 	public void DesenhaTodasAsPecas(Graphics2D g2d) {
@@ -119,8 +120,8 @@ public class Game extends JPanel{
 	public void DrawAll(Graphics2D g2d, Stroke defaultStroke) {
 		Tabuleiro.getTabuleiro().paintTabuleiro(g2d);
 		DrawDado(g2d);
-		DiceColor(g2d, defaultStroke);
 		DesenhaTodasAsPecas(g2d);
+		DiceColor(g2d, defaultStroke);
 		PecaNaMesmaCasa(g2d, defaultStroke);
 	}
 	
