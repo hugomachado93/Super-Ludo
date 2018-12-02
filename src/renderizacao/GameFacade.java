@@ -57,7 +57,6 @@ public class GameFacade{
 	
 	public void mouseClicked(MouseEvent e) {
 		jogadorTemp = nJogador; 
-		jogador[nJogador].setPecaIniciada(false);
 		if(Dado.dadoClicado && !jogoAcabou) {
 			dadoVal = dado.getNumDado();
 			
@@ -287,7 +286,7 @@ public class GameFacade{
 				
 			}
 		}
-		//System.out.println(quant);
+		
 		for(int i=0;i<4;i++)
 		{
 			for(int j=0; j<4;j++)
