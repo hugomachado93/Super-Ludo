@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 
+import logic.Jogador;
+
 public class Desenhos {
 	
 	public Desenhos() {

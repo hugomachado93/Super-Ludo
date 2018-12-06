@@ -1,4 +1,4 @@
-package renderizacao;
+package logic;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -23,7 +23,7 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-public class GameFacade{
+public class GameFacade extends Observable{
 
 	private Jogador[] jogador = new Jogador[4];
 	private Dado dado;
@@ -34,11 +34,13 @@ public class GameFacade{
 	boolean jogoAcabou = false;
 	private static int nJogador = 0;
 	private int ultimoMov=0;
+	private boolean ultimaCasa = false;
 	private int peca;
 	private int jogadorTemp;
 	private File dados;
 	private boolean pecaComida = false;
 	private JFileChooser file = new JFileChooser();
+	private boolean semMov;
 	
 	private static int turno = nJogador;
 	
@@ -57,12 +59,18 @@ public class GameFacade{
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-		jogadorTemp = nJogador; 
-		todasPecasNoIncio();
-		if(Dado.dadoClicado && !jogoAcabou) {
+		dadoVal = dado.getNumDado();
+		jogadorTemp = nJogador;
+		semMov = false;
+		if(verificaMovimentacao() && Dado.dadoClicado) {
+			Dado.dadoClicado = false;
+			nJogador++;
+			semMov = true;
+		}
+		if(Dado.dadoClicado && !jogoAcabou && !semMov) {
 			dadoVal = dado.getNumDado();
-			
 			for(int i=0;i<4;i++) {
+				peca = i;
 				if(jogador[nJogador].getPecas().get(i).getEllipse().contains(e.getPoint()) && !jogador[nJogador].getPecas().get(i).isUltimaCasa()) {
 					if(!jogador[nJogador].getPecas().get(i).isPodeSair() && dadoVal != 5) {
 						if(!jogador[nJogador].isPecaIniciada()) {
@@ -109,6 +117,11 @@ public class GameFacade{
 						break;
 					}else {
 						
+						if(verificaMovimentacao()){
+							nJogador++;
+							break;
+						}
+						
 						if(saidaObrigatoria(i, nJogador, dadoVal)) {
 							jogador[nJogador-1].setNumJogadas(0);
 							break;
@@ -122,15 +135,27 @@ public class GameFacade{
 						int yInicial = jogador[nJogador].getPecas().get(i).getY();
 						
 						if(val > MAX_CASAS) {
-							val = MAX_CASAS - (val - MAX_CASAS);
+							mov[i] = false;
+							break;
 						}else if(val == MAX_CASAS) {
 							jogador[nJogador].getPecas().get(i).setUltimaCasa(true);
+							ultimaCasa = true;
 							mov[i]=false;
+							jogador[nJogador].getPecas().get(i).setNumCasa(val);
+							jogador[nJogador].getPecas().get(i).setX(jogador[nJogador].getCasas().get(val).getX());
+							jogador[nJogador].getPecas().get(i).setY(jogador[nJogador].getCasas().get(val).getY());
+							dado.setNumDado(6);
+							nJogador++;
+							break;
 						}
 						
-						if(dadoVal == 6 && (jogador[nJogador].getNumJogadas() != 2) && !pecaComida) {
-							i = procuraBarreira(i, nJogador);
-							jogador[nJogador].getPecas().get(i).setNumCasa(jogador[nJogador].getPecas().get(i).getNumCasa() + 6);
+						if(dadoVal == 6 && (jogador[nJogador].getNumJogadas() != 2) && !pecaComida && !ultimaCasa) {
+							i = procuraBarreira(i, val, nJogador, casaInicial, xInicial, yInicial);
+							casaInicial = jogador[nJogador].getPecas().get(i).getNumCasa();
+							xInicial = jogador[nJogador].getPecas().get(i).getX();
+							yInicial = jogador[nJogador].getPecas().get(i).getY();
+							val = jogador[nJogador].getPecas().get(i).getNumCasa() + 6;
+							jogador[nJogador].getPecas().get(i).setNumCasa(val);
 							jogador[nJogador].getPecas().get(i).setX(jogador[nJogador].getCasas().get(jogador[nJogador].getPecas().get(i).getNumCasa()).getX());
 							jogador[nJogador].getPecas().get(i).setY(jogador[nJogador].getCasas().get(jogador[nJogador].getPecas().get(i).getNumCasa()).getY());
 							
@@ -152,8 +177,7 @@ public class GameFacade{
 							Dado.dadoClicado = false;
 							break;
 						}else if (dadoVal == 6 && (jogador[nJogador].getNumJogadas() == 2) && !pecaComida){
-							i = procuraBarreira(i, nJogador);
-							//int peca = ProcuraUltimaPecaMovimentada(nJogador, i);
+							i = procuraBarreira(i, val, nJogador, casaInicial, xInicial, yInicial);
 							jogador[nJogador].getPecas().get(ultimoMov).setX(jogador[nJogador].getInicialX(ultimoMov));
 							jogador[nJogador].getPecas().get(ultimoMov).setY(jogador[nJogador].getInicialY(ultimoMov));
 							jogador[nJogador].getPecas().get(ultimoMov).setNumCasa(0);
@@ -163,6 +187,7 @@ public class GameFacade{
 							Dado.dadoClicado = false;
 							break;
 						}
+						ultimaCasa = false;
 						pecaComida = false;
 						jogador[nJogador].setNumJogadas(0);
 						
@@ -192,7 +217,7 @@ public class GameFacade{
 				}
 			}
 
-			if(temMovimento()) {
+			if(temMovimento(peca)) {
 				mov[0]=true;
 				mov[1]=true;
 				mov[2]=true;
@@ -201,8 +226,9 @@ public class GameFacade{
 				Dado.dadoClicado = false;
 			}
 		}
-		
-		nJogador = (nJogador == 3) ? 0: nJogador;
+		jogoAcabou();
+		setChanged();
+		notifyObservers(nJogador);
 	}
 	
 	private boolean checaCasaInicial(int id, int val, int numJogador) {
@@ -278,7 +304,8 @@ public class GameFacade{
 					quant++;
 				}
 				if(jogador[i].getPecas().get(j).getX()==px && jogador[i].getPecas().get(j).getY()==py
-						&& (id != j) && jogador[numJogador] == jogador[i] && jogador[i].getCasas().get(val).isCasaEspecial()) {
+						&& (id != j) && jogador[numJogador] == jogador[i] 
+								&& (jogador[i].getCasas().get(val).isCasaEspecial() || jogador[i].getCasas().get(val).isCasaInicial())) {
 					jogador[numJogador].getPecas().get(id).setNumCasa(casaInicial);
 					jogador[numJogador].getPecas().get(id).setX(xInicial);
 					jogador[numJogador].getPecas().get(id).setY(yInicial);
@@ -297,6 +324,7 @@ public class GameFacade{
 				if( jogador[i].getPecas().get(j).getX()==px && jogador[i].getPecas().get(j).getY()==py && jogador[numJogador]!=jogador[i])
 				{
 					if(!jogador[numJogador].getCasas().get(val).isCasaEspecial()) {
+						jogador[numJogador].getPecas().get(id).setPodeSair(true);
 						x=jogador[i].getInicialX(j);
 						y=jogador[i].getInicialY(j);
 						jogador[i].getPecas().get(j).setX(x);
@@ -306,13 +334,11 @@ public class GameFacade{
 						if(jogador[numJogador].getPecas().get(id).isPodeSair()) {
 							dado.setNumDado(6);
 							pecaComida = true;
-						}else {
-							nJogador++;
-							Dado.dadoClicado=false;
 						}
 						return true;
-					}else if(jogador[numJogador].getCasas().get(val).isCasaEspecial() && quant < 2 
-							&& (jogador[i].getPecas().get(j).getNumCasa() == 0)){
+					}else if(jogador[i].getCasas().get(j).isCasaInicial() && quant < 2){
+						return false;
+					}else if(jogador[numJogador].getCasas().get(val).isCasaEspecial() && quant < 2){
 						return false;
 					}else {
 						jogador[numJogador].getPecas().get(id).setNumCasa(casaInicial);
@@ -362,38 +388,77 @@ public class GameFacade{
 		return false;
 	}
 	
-	private int procuraBarreira(int id, int numJogador) {
+	public boolean verificaMovimentacao() {
+		boolean movimento[] = new boolean[4];
 		for(int i=0;i<4;i++) {
-			if(jogador[numJogador].getPecas().get(i).isBarreira() && !jogador[numJogador].getPecas().get(i).isUltimaCasa()) {
-				
+		/*
+			int casaInicial = jogador[nJogador].getPecas().get(i).getNumCasa();
+			int  xInicial = jogador[nJogador].getPecas().get(i).getX();
+			int yInicial = jogador[nJogador].getPecas().get(i).getY();
+			int val = jogador[nJogador].getPecas().get(i).getNumCasa() + dado.getNumDado();
+			jogador[nJogador].getPecas().get(i).setNumCasa(val);
+			jogador[nJogador].getPecas().get(i).setX(jogador[nJogador].getCasas().get(val).getX());
+			jogador[nJogador].getPecas().get(i).setY(jogador[nJogador].getCasas().get(val).getY());
+			val = dadoVal + jogador[nJogador].getPecas().get(i).getNumCasa();
+			
+			movimento[i] = comePeca(i, val , nJogador, casaInicial, xInicial, yInicial);
+			movimento[i] = checaBarreira(i, val, dadoVal, nJogador);
+			*/
+			if(dado.getNumDado() != 5) {
+				if(jogador[nJogador].getPecas().get(i).isPodeSair() == false) {
+					movimento[i] = true;
+				}
+			}
+			
+			if(jogador[nJogador].getPecas().get(i).isUltimaCasa() == true) {
+				movimento[i] = true;
+			}
+			/*	
+			jogador[nJogador].getPecas().get(i).setNumCasa(casaInicial);
+			jogador[nJogador].getPecas().get(i).setX(xInicial);
+			jogador[nJogador].getPecas().get(i).setY(yInicial);
+			*/
+		}
+		
+		for(int i=0;i<4;i++) {
+			System.out.println(movimento[i]);
+			if(movimento[i] == false) {
+				return false;
+			}
+		}
+		Dado.dadoClicado = false;
+		return true;
+	}
+	
+	private int procuraBarreira(int id,int val, int numJogador, int casaInicial, int xInicial, int yInicial) {
+		
+		for(int i=0;i<4;i++) {
+			if(jogador[numJogador].getPecas().get(i).isBarreira() && !jogador[numJogador].getPecas().get(i).isUltimaCasa()) {	
 				return i;
 			}
 		}
 		return id;
 	}
 	
-	private int ProcuraUltimaPecaMovimentada(int numJogador, int id) {
-		int max = Integer.MAX_VALUE;
+	public void todasPecasNoIncio() {
 		for(int i=0;i<4;i++) {
-			if(jogador[numJogador].getPecas().get(i).getUltimoMovimentado() < max) {
-				return i;
-			}
+				
+				if(!jogador[nJogador].isPecaIniciada()) {
+					jogador[nJogador].setPecaIniciada(true);
+					int x=jogador[nJogador].getInicialX(i);
+					int y=jogador[nJogador].getInicialY(i);
+					jogador[nJogador].getPecas().get(i).setX(jogador[nJogador].getCasas().get(0).getX());
+					jogador[nJogador].getPecas().get(i).setY(jogador[nJogador].getCasas().get(0).getY());
+					jogador[nJogador].setNumJogadas(0);
+					jogador[nJogador].getPecas().get(i).setPodeSair(true);
+					break;
+				}
 		}
-		return -1;
-	}
-	
-	private void todasPecasNoIncio() {
-		for(int i=0;i<4;i++) {
-			if(jogador[nJogador].getPecas().get(i).isPodeSair() == false) {
-				jogador[nJogador].setPecaIniciada(false);
-			}else {
-				jogador[nJogador].setPecaIniciada(true);
-				break;
-			}
-		}
+		
 	}
 	
 	public boolean saidaObrigatoria(int id, int numJogador, int dadoVal) {
+		int peca = -1;
 		if(dadoVal == 5){
 			for(int i=0;i<4;i++) {
 				if(i != id && jogador[numJogador].getPecas().get(i).isPodeSair() == false) {	
@@ -402,8 +467,10 @@ public class GameFacade{
 					jogador[numJogador].getPecas().get(i).setX(jogador[numJogador].getCasas().get(0).getX());
 					jogador[numJogador].getPecas().get(i).setY(jogador[numJogador].getCasas().get(0).getY());
 					if(comePeca(i, 0, numJogador, 0, x, y)) {
-						jogador[numJogador].getPecas().get(i).setX(x);
-						jogador[numJogador].getPecas().get(i).setY(y);
+						peca = i;
+						//jogador[numJogador].getPecas().get(i).setX(x);
+						//jogador[numJogador].getPecas().get(i).setY(y);
+						//jogador[numJogador].getPecas().get(i).setPodeSair(true);
 						return false;
 					}
 					jogador[numJogador].getPecas().get(i).setX(x);
@@ -412,9 +479,10 @@ public class GameFacade{
 			}
 			
 			for(int i=0;i<4;i++) {
-				if(!jogador[numJogador].getPecas().get(i).isPodeSair() && jogador[numJogador].getPecas().get(i).isPodeSair() == false) {
+				if(!jogador[numJogador].getPecas().get(i).isPodeSair()) {
 					jogador[numJogador].getPecas().get(i).setX(jogador[numJogador].getCasas().get(0).getX());
 					jogador[numJogador].getPecas().get(i).setY(jogador[numJogador].getCasas().get(0).getY());
+					jogador[numJogador].getPecas().get(i).setNumCasa(0);
 					jogador[numJogador].getPecas().get(i).setPodeSair(true);
 					nJogador++;
 					Dado.dadoClicado = false;
@@ -425,7 +493,20 @@ public class GameFacade{
 		return false;
 	}
 	
-	private boolean temMovimento() {
+	private boolean temMovimento(int id) {
+		for(int i=0; i<4;i++)
+		{
+			for(int j=0;j<4;j++) {	
+				int px = jogador[nJogador].getPecas().get(id).getX();
+				int py = jogador[nJogador].getPecas().get(id).getY();
+				if( jogador[i].getPecas().get(j).getX()==px && jogador[i].getPecas().get(j).getY()==py 
+						&& !jogador[nJogador].getPecas().get(id).isBarreira() && jogador[i].getPecas().get(j).isBarreira() 
+						&& !jogador[nJogador].getPecas().get(id).isUltimaCasa() && !jogador[i].getPecas().get(j).isUltimaCasa())
+				{
+					mov[i] = false;
+				}
+			}
+		}
 		for(int i=0;i<4;i++) {
 			if(mov[i] == true) {
 				return false;
@@ -490,6 +571,10 @@ public class GameFacade{
 	
 	public int getNumJogador() {
 		return nJogador;
+	}
+	
+	public void setNumJogador(int val) {
+		nJogador = val;
 	}
 	
 	public void salvamento() throws IOException
@@ -602,6 +687,7 @@ public class GameFacade{
 				peca.setNumCasa(0);
 				peca.setPodeSair(false);
 				peca.setUltimaCasa(false);
+				jogador[i].setPecaIniciada(false);
 
 			}
 		}

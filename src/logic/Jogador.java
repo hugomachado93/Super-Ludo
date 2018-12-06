@@ -1,4 +1,4 @@
-package renderizacao;
+package logic;
 
 import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;

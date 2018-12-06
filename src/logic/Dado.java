@@ -1,4 +1,4 @@
-package renderizacao;
+package logic;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -20,7 +20,7 @@ public class Dado{
 	
 	private static int numDado=1;
 	
-	static boolean dadoClicado = false;
+	public static boolean dadoClicado = false;
 	
 	private List<BufferedImage> images = new ArrayList<>();
 	

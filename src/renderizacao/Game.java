@@ -21,6 +21,11 @@ import java.util.Random;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import logic.AtualizacaoLogica;
+import logic.Dado;
+import logic.GameFacade;
+import logic.Jogador;
+
 
 public class Game extends JPanel{
 	private static final long serialVersionUID = 1L;
@@ -35,7 +40,7 @@ public class Game extends JPanel{
 	Dado dado = new Dado();
 	
 	public Game() throws IOException {
-		
+		gameFacade.addObserver(new AtualizacaoLogica());
 		bDice = new JButton("DADO");
 		jogador = gameFacade.getJogador();
 		nJogador = gameFacade.getNumJogador();
@@ -142,6 +147,7 @@ public class Game extends JPanel{
 		bDebug[0].addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mouseClicked(MouseEvent e) {
+				gameFacade.todasPecasNoIncio();
 				if(!Dado.dadoClicado) {
 					dado.setNumDado(1);
 					repaint();
@@ -154,6 +160,7 @@ public class Game extends JPanel{
 		bDebug[1].addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mouseClicked(MouseEvent e) {
+				gameFacade.todasPecasNoIncio();
 				if(!Dado.dadoClicado) {
 					dado.setNumDado(2);
 					repaint();
@@ -166,6 +173,7 @@ public class Game extends JPanel{
 		bDebug[2].addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mouseClicked(MouseEvent e) {
+				gameFacade.todasPecasNoIncio();
 				if(!Dado.dadoClicado) {
 					dado.setNumDado(3);
 					repaint();
@@ -178,6 +186,7 @@ public class Game extends JPanel{
 		bDebug[3].addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mouseClicked(MouseEvent e) {
+				gameFacade.todasPecasNoIncio();
 				if(!Dado.dadoClicado) {
 					dado.setNumDado(4);
 					repaint();
@@ -190,6 +199,7 @@ public class Game extends JPanel{
 		bDebug[4].addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mouseClicked(MouseEvent e) {
+				gameFacade.todasPecasNoIncio();
 				if(!Dado.dadoClicado) {
 					dado.setNumDado(5);
 					repaint();
@@ -202,6 +212,7 @@ public class Game extends JPanel{
 		bDebug[5].addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mouseClicked(MouseEvent e) {
+				gameFacade.todasPecasNoIncio();
 				if(!Dado.dadoClicado) {
 					dado.setNumDado(6);
 					repaint();
@@ -218,6 +229,7 @@ public class Game extends JPanel{
 		bDice.addMouseListener(new MouseAdapter() {
 			@Override
 			 public void mouseClicked(MouseEvent e) {
+				gameFacade.todasPecasNoIncio();
 				if(!Dado.dadoClicado) {
 					dado.getRandNumDado();
 					repaint();
