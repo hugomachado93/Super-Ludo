@@ -1,0 +1,26 @@
+350 5 11 0 false false false true
+53 200 0 0 false false false false
+200 53 0 0 false false false false
+200 200 0 0 false false false false
+0 true true
+
+400 150 2 0 false false false true
+495 200 0 0 false false false false
+640 53 0 0 false false false false
+640 200 0 0 false false false false
+0 true true
+
+250 395 5 0 false false false true
+53 642 0 0 false false false false
+200 495 0 0 false false false false
+200 642 0 0 false false false false
+0 true true
+
+590 395 1 0 false false false true
+495 642 0 0 false false false false
+642 495 0 0 false false false false
+642 642 0 0 false false false false
+0 true true
+
+1 4 false 0 0 0 false false false 
+true true true true
